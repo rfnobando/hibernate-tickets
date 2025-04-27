@@ -1,2 +1,11 @@
+# Project
+/.metadata/
+
 # Diagrams
-diagrams/*.bkp
+/diagrams/*.bkp
+
+# App
+/app/.settings/
+/app/bin/
+/app/.classpath
+/app/.project

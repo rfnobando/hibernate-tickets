@@ -9,3 +9,4 @@
 /app/bin/
 /app/.classpath
 /app/.project
+/app/src/hibernate.cfg.xml

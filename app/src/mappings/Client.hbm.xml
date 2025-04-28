@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="model">
+
+    <joined-subclass name="Client" table="customers">
+        <key column="user_id" />
+
+        <set name="ticketsCreated" table="tickets" inverse="true" lazy="true" fetch="select">
+            <key column="client_id" not-null="true"/>
+            <one-to-many class="model.Ticket"/>
+        </set>
+
+    </joined-subclass>
+
+</hibernate-mapping>
+

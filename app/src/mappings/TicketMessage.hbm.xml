@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="datos.TicketMessage" table="TicketMessage">
+        <id column="id" name="id">
+            <generator class="identity"/>
+        </id>
+
+        <property column="body" name="body" type="string"/>
+        <property column="creationDate" name="creationDate" type="LocalDate"/>
+
+		<!-- Relacion con tabla user -->
+        <many-to-one name="user" column="idUser" class="data.User" not-null="true"/>
+        
+        <!-- Relacion con tabla ticket -->
+        <many-to-one name="ticket" column="idTicket" class="data.Ticket" not-null="true"/>
+
+		 <!-- Relacion con tabla FotoAdjunta -->
+        <set name="photo" table="attachedPhoto" inverse="true" lazy="true" fetch="select">
+            <key column="idTicketMessage" not-null="true"/>
+            <one-to-many class="data.FotoAdjunta"/>
+        </set>
+    </class>
+</hibernate-mapping>

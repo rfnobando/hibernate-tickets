@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="model">
+
+    <class name="User" table="users">
+        
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" column="first_name" type="string"/>
+        <property name="surname" column="last_name" type="string"/>
+        <property name="email" column="email" type="string"/>
+        <property name="password" column="password" type="string"/>
+
+        <!-- Relación 1 a 1 con ProfilePhoto -->
+        <one-to-one name="profilePhoto" class="model.ProfilePhoto" cascade="all" />
+
+        <!-- Relación 1 a muchos con TicketMessage -->
+        <set name="ticketMessages" table="ticket_messages" cascade="all" inverse="true">
+            <key column="user_id"/>
+            <one-to-many class="model.TicketMessage"/>
+        </set>
+
+        <!-- Herencia: Cliente -->
+        <joined-subclass name="Client" table="clients">
+            <key column="id"/>
+        </joined-subclass>
+
+        <!-- Herencia: Empleado -->
+        <joined-subclass name="Employee" table="employees">
+            <key column="id"/>        
+        </joined-subclass>
+
+    </class>
+
+</hibernate-mapping>

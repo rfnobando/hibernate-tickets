@@ -79,6 +79,7 @@ ALTER TABLE `users`
 ADD CONSTRAINT `unique_users_email` UNIQUE (`email`);
 
 ALTER TABLE `profile_pictures`
+ADD CONSTRAINT `unique_profile_pictures_file_name` UNIQUE (`file_name`),
 ADD CONSTRAINT `unique_profile_pictures_user_id` UNIQUE (`user_id`),
 ADD CONSTRAINT `fk_profile_pictures_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`); 
 
@@ -117,6 +118,6 @@ ADD CONSTRAINT `fk_ticket_messages_user_id` FOREIGN KEY (`user_id`) REFERENCES `
 ADD CONSTRAINT `fk_ticket_messages_ticket_id` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`);
 
 ALTER TABLE `attached_pictures`
-ADD CONSTRAINT `unique_file_name` UNIQUE (`file_name`),
+ADD CONSTRAINT `unique_attached_pictures_file_name` UNIQUE (`file_name`),
 ADD KEY `idx_attached_pictures_ticket_message_id` (`ticket_message_id`),
 ADD CONSTRAINT `fk_attached_pictures_ticket_message_id` FOREIGN KEY (`ticket_message_id`) REFERENCES `ticket_messages` (`id`);

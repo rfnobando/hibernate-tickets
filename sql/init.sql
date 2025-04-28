@@ -69,7 +69,7 @@ CREATE TABLE `ticket_messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `attached_pictures` (
-  `id` bigint unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `file_name` varchar(255) NOT NULL,
   `ticket_message_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`)

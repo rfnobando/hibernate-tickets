@@ -3,6 +3,9 @@ package model;
 public class Status {
 	public long id;
 	public String name;
+	
+	public Status(){}
+	
 	public Status(String name) {
 		super();
 		this.name = name;

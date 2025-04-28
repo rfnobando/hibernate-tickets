@@ -3,6 +3,9 @@ package model;
 public class AttachedPhoto {
 	public long id;
 	public String name;
+	
+	public AttachedPhoto(){}
+	
 	public AttachedPhoto(String name) {
 		super();
 		this.name = name;

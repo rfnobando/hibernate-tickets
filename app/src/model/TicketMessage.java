@@ -10,6 +10,9 @@ public class TicketMessage {
 	public LocalDate createDate;
 	public User user;
 	public List<AttachedPhoto> photos;
+	
+	public TicketMessage(){}
+	
 	public TicketMessage(String text, LocalDate createDate, User user) {
 		super();
 		this.text = text;

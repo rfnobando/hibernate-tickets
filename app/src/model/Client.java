@@ -6,6 +6,9 @@ import java.util.List;
 public class Client extends User {
 	public List<Ticket> ticketsCreated;
 
+	
+	public Client(){}
+	
 	public Client(String name, String surname, String email, String password, ProfilePhoto profilePhoto) {
 		super(name, surname, email, password, profilePhoto);
 		this.ticketsCreated = new ArrayList<Ticket>();

@@ -15,6 +15,8 @@ public class Ticket {
 	public Status status;
 	public List<TicketMessage> messages;
 	
+	public Ticket(){}
+	
 	public Ticket(String title, LocalDate creationDate, LocalDate updateDate, Client client,
 			TicketCategory ticketCategory, Status status) {
 		super();

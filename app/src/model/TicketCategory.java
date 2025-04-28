@@ -7,9 +7,11 @@ public class TicketCategory {
 	public long id;
 	public String name;
 	public List<Ticket> tickets;
-	public TicketCategory(long id, String name) {
+	
+	public TicketCategory(){}
+	
+	public TicketCategory(String name) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.tickets = new ArrayList<Ticket>();
 	}

@@ -3,6 +3,9 @@ package model;
 public class ProfilePhoto {
 	public long id;
 	public String name;
+	
+	public ProfilePhoto(){}
+	
 	public ProfilePhoto(String name) {
 		super();
 		this.name = name;

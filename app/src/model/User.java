@@ -9,6 +9,8 @@ public abstract class User {
 	protected String password;
 	protected ProfilePhoto profilePhoto;
 	
+	public User(){}
+	
 	public User(String name, String surname, String email, String password, ProfilePhoto profilePhoto) {
 		super();
 		this.name = name;

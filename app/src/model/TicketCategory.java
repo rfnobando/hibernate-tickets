@@ -18,7 +18,7 @@ public class TicketCategory {
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -36,5 +36,9 @@ public class TicketCategory {
 	@Override
 	public String toString() {
 		return "TicketCategory [id=" + id + ", name=" + name + ", tickets=" + tickets + "]";
+	}
+	
+	public boolean equals(TicketCategory ticketCategory) {
+		return this.name.equals(ticketCategory.getName());
 	}
 }

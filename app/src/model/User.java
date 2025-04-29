@@ -7,24 +7,24 @@ public abstract class User {
 	protected String surname;
 	protected String email;
 	protected String password;
-	protected ProfilePhoto profilePhoto;
+	protected ProfilePicture profilePicture;
 	
 	public User(){}
 	
-	public User(String name, String surname, String email, String password, ProfilePhoto profilePhoto) {
+	public User(String name, String surname, String email, String password, ProfilePicture profilePicture) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
-		this.profilePhoto = profilePhoto;
+		this.profilePicture = profilePicture;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
 	}
 
@@ -60,19 +60,22 @@ public abstract class User {
 		this.password = password;
 	}
 
-	public ProfilePhoto getProfilePhoto() {
-		return profilePhoto;
+	
+
+	public ProfilePicture getProfilePicture() {
+		return profilePicture;
 	}
 
-	public void setProfilePhoto(ProfilePhoto profilePhoto) {
-		this.profilePhoto = profilePhoto;
+	public void setProfilePicture(ProfilePicture profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", password="
-				+ password + ", profilePhoto=" + profilePhoto;
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", profilePicture=" + profilePicture;
 	}
 	
-	
+	public boolean equals(User user) {
+		return this.id == user.getId();
+	}
 }

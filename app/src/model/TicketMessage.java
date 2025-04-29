@@ -1,59 +1,67 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketMessage {
 	public long id;
-	public String text;
-	public LocalDate createDate;
+	public String body;
+	public LocalDateTime createdAt;
 	public User user;
-	public List<AttachedPhoto> photos;
+	public List<AttachedPicture> pictures;
 	
-	public TicketMessage(){}
-	
-	public TicketMessage(String text, LocalDate createDate, User user) {
+	public TicketMessage() {}
+	 
+	public TicketMessage(String body, LocalDateTime createdAt, User user) {
 		super();
-		this.text = text;
-		this.createDate = createDate;
+		this.body = body;
+		this.createdAt = createdAt;
 		this.user = user;
-		this.photos = new ArrayList<AttachedPhoto>();
+		this.pictures = new ArrayList<AttachedPicture>();
 	}
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
 	}
-	public String getText() {
-		return text;
+
+	public String getBody() {
+		return body;
 	}
-	public void setText(String text) {
-		this.text = text;
+
+	public void setBody(String body) {
+		this.body = body;
 	}
-	public LocalDate getCreateDate() {
-		return createDate;
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
-	public void setCreateDate(LocalDate createDate) {
-		this.createDate = createDate;
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
+
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public List<AttachedPhoto> getPhotos() {
-		return photos;
+	
+	public List<AttachedPicture> getPictures() {
+		return pictures;
 	}
-	public void setPhotos(List<AttachedPhoto> photos) {
-		this.photos = photos;
+
+	public void setPictures(List<AttachedPicture> pictures) {
+		this.pictures = pictures;
 	}
+
 	@Override
 	public String toString() {
-		return "TicketMessage [id=" + id + ", text=" + text + ", createDate=" + createDate + ", user=" + user
-				+ ", photos=" + photos + "]";
+		return "TicketMessage [id=" + id + ", body=" + body + ", createdAt=" + createdAt + ", user=" + user
+				+ ", pictures=" + pictures + "]";
 	}
 	
 	

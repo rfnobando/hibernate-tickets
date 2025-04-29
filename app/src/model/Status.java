@@ -13,7 +13,7 @@ public class Status {
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -24,8 +24,11 @@ public class Status {
 	}
 	@Override
 	public String toString() {
-		return "State [id=" + id + ", name=" + name + "]";
+		return "Status [id=" + id + ", name=" + name + "]";
 	}
 	
+	public boolean equals(Status status) {
+		return this.name.equals(status.getName());
+	}
 	
 }

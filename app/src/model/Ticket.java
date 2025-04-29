@@ -1,30 +1,31 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Ticket {
 	public long id;
 	public String title;
-	public LocalDate creationDate;
-	public LocalDate updateDate;
+	public LocalDateTime createdAt;
+	public LocalDateTime updatedAt;
 	public Client client;
-	public List<Employee> employees;
+	public List<Customer> customer;
 	public TicketCategory ticketCategory;
 	public Status status;
 	public List<TicketMessage> messages;
 	
 	public Ticket(){}
 	
-	public Ticket(String title, LocalDate creationDate, LocalDate updateDate, Client client,
+	public Ticket(String title, LocalDateTime createdAt, LocalDateTime updatedAt, Client client,
 			TicketCategory ticketCategory, Status status) {
 		super();
 		this.title = title;
-		this.creationDate = creationDate;
-		this.updateDate = updateDate;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.client = client;
-		this.employees = new ArrayList<Employee>();
+		this.customer = new ArrayList<Customer>();
 		this.ticketCategory = ticketCategory;
 		this.status = status;
 		this.messages = new ArrayList<TicketMessage>();
@@ -35,7 +36,7 @@ public class Ticket {
 		return id;
 	}
 
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
 	}
 
@@ -47,20 +48,20 @@ public class Ticket {
 		this.title = title;
 	}
 
-	public LocalDate getCreationDate() {
-		return creationDate;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreationDate(LocalDate creationDate) {
-		this.creationDate = creationDate;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+	
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public LocalDate getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(LocalDate updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public Client getClient() {
@@ -71,12 +72,12 @@ public class Ticket {
 		this.client = client;
 	}
 
-	public List<Employee> getEmployees() {
-		return employees;
+	public List<Customer> getCustomer() {
+		return customer;
 	}
 
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
+	public void setCustomer(List<Customer> customer) {
+		this.customer = customer;
 	}
 
 	public TicketCategory getTicketCategory() {
@@ -87,12 +88,12 @@ public class Ticket {
 		this.ticketCategory = ticketCategory;
 	}
 
-	public Status getState() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setState(Status state) {
-		this.status = state;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public List<TicketMessage> getMessages() {
@@ -105,10 +106,12 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", title=" + title + ", creationDate=" + creationDate + ", updateDate=" + updateDate
-				+ ", client=" + client + ", employees=" + employees + ", ticketCategory=" + ticketCategory + ", state="
+		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", client=" + client.getId() + ", Customer=" + (customer != null ? customer.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
 				+ status + ", messages=" + messages + "]";
 	}
 	
-	
+	public boolean equals(Ticket ticket) {
+		return this.id == ticket.getId(); 
+	}
 }

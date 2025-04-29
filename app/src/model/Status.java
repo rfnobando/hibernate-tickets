@@ -1,8 +1,8 @@
 package model;
 
 public class Status {
-	public long id;
-	public String name;
+	private long id;
+	private String name;
 	
 	public Status(){}
 	

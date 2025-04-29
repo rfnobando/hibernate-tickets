@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Ticket {
-	public long id;
-	public String title;
-	public LocalDateTime createdAt;
-	public LocalDateTime updatedAt;
-	public Client client;
-	public List<Customer> customer;
-	public TicketCategory ticketCategory;
-	public Status status;
-	public List<TicketMessage> messages;
+	private long id;
+	private String title;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+	private Client client;
+	private List<Customer> customer;
+	private TicketCategory ticketCategory;
+	private Status status;
+	private List<TicketMessage> messages;
 	
 	public Ticket(){}
 	

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TicketCategory {
-	public long id;
-	public String name;
-	public List<Ticket> tickets;
+	private long id;
+	private String name;
+	private List<Ticket> tickets;
 	
 	public TicketCategory(){}
 	

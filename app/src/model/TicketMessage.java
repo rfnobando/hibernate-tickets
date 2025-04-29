@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TicketMessage {
-	public long id;
-	public String body;
-	public LocalDateTime createdAt;
-	public User user;
-	public List<AttachedPicture> pictures;
+	private long id;
+	private String body;
+	private LocalDateTime createdAt;
+	private User user;
+	private List<AttachedPicture> pictures;
 	
 	public TicketMessage() {}
 	 

@@ -1,8 +1,8 @@
 package model;
 
 public class AttachedPicture {
-	public long id;
-	public String fileName;
+	private long id;
+	private String fileName;
 	
 	public AttachedPicture(){}
 	

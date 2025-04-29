@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends User {
-	public List<Ticket> createdTickets;
+	private List<Ticket> createdTickets;
 
 	
 	public Client(){}

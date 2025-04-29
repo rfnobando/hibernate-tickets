@@ -10,22 +10,22 @@ public class Ticket {
 	private String title;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private Client client;
-	private List<Customer> customer;
+	private Customer customer;
+	private List<Employee> employee;
 	private TicketCategory ticketCategory;
 	private Status status;
 	private List<TicketMessage> messages;
 	
 	public Ticket(){}
 	
-	public Ticket(String title, LocalDateTime createdAt, LocalDateTime updatedAt, Client client,
+	public Ticket(String title, LocalDateTime createdAt, LocalDateTime updatedAt, Customer customer,
 			TicketCategory ticketCategory, Status status) {
 		super();
 		this.title = title;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.client = client;
-		this.customer = new ArrayList<Customer>();
+		this.customer = customer;
+		this.employee = new ArrayList<Employee>();
 		this.ticketCategory = ticketCategory;
 		this.status = status;
 		this.messages = new ArrayList<TicketMessage>();
@@ -64,20 +64,20 @@ public class Ticket {
 		this.updatedAt = updatedAt;
 	}
 
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	public List<Customer> getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(List<Customer> customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public List<Employee> getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(List<Employee> employee) {
+		this.employee = employee;
 	}
 
 	public TicketCategory getTicketCategory() {
@@ -107,7 +107,7 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", client=" + client.getId() + ", Customer=" + (customer != null ? customer.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
+				+ ", customer=" + customer.getId() + ", employee=" + (employee != null ? employee.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
 				+ status + ", messages=" + messages + "]";
 	}
 	

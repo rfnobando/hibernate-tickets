@@ -3,10 +3,10 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="model">
 
-    <joined-subclass name="Employee" table="employees">
+    <joined-subclass name="model.Employee" table="employees">
         <key column="user_id" />
 
-        <set name="ticketsManaged" table="employees_tickets" lazy="true" cascade="all">
+        <set name="managedTickets" table="employees_tickets" lazy="true" cascade="all">
             <key column="employee_id"/>
             <many-to-many class="model.Ticket" column="ticket_id"/>
         </set>

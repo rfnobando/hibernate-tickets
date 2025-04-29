@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="data.Status" table="Status">
-        <id column="id" name="id">
+<hibernate-mapping package="model">
+
+    <class name="model.Status" table="status">
+
+        <id name="id" column="id">
             <generator class="identity"/>
         </id>
 
-        <property column="name" name="name" type="string"/>
-        
-            <set name="tickets" table="ticket" inverse="true" lazy="true" fetch="select">
-            <key column="idStatus" not-null="true"/>
-            <one-to-many class="data.Ticket"/>
+        <property name="name" column="name" type="string"/>
+
+        <set name="tickets" table="tickets" inverse="true" lazy="true" fetch="select">
+            <key column="status_id" not-null="true"/>
+            <one-to-many class="model.Ticket"/>
         </set>
+
     </class>
+
 </hibernate-mapping>

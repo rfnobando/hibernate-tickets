@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="datos.TicketMessage" table="TicketMessage">
-        <id column="id" name="id">
+
+<hibernate-mapping package="model">
+
+    <class name="model.TicketMessage" table="ticket_messages">
+
+        <id name="id" column="id">
             <generator class="identity"/>
         </id>
 
-        <property column="body" name="body" type="string"/>
-        <property column="creationDate" name="creationDate" type="LocalDate"/>
+        <property name="body" column="body" type="string"/>
+        <property name="createdAt" column="created_at" type="timestamp"/>
 
-		<!-- Relacion con tabla user -->
-        <many-to-one name="user" column="idUser" class="data.User" not-null="true"/>
+		
+        <many-to-one name="user" column="user_id" class="model.User" not-null="true"/>
+
         
-        <!-- Relacion con tabla ticket -->
-        <many-to-one name="ticket" column="idTicket" class="data.Ticket" not-null="true"/>
+        <many-to-one name="ticket" column="ticket_id" class="model.Ticket" not-null="true"/>
 
-		 <!-- Relacion con tabla FotoAdjunta -->
-        <set name="photo" table="attachedPhoto" inverse="true" lazy="true" fetch="select">
-            <key column="idTicketMessage" not-null="true"/>
-            <one-to-many class="data.FotoAdjunta"/>
+		
+        <set name="attachedPictures" table="attached_pictures" inverse="true" lazy="true" fetch="select">
+            <key column="ticket_message_id" not-null="true"/>
+            <one-to-many class="model.AttachedPicture"/>
         </set>
+
     </class>
+
 </hibernate-mapping>

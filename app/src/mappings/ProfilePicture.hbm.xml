@@ -4,14 +4,16 @@
 
 <hibernate-mapping package="model">
 
-    <class name="ProfilePhoto" table="profile_pictures">
+    <class name="model.ProfilePicture" table="profile_pictures">
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
 
-        <property name="name" column="file_name" type="string"/>
 
-        <one-to-one name="user" class="model.User" property-ref="profilePhoto" cascade="all"/>
+        <property name="fileName" column="file_name" type="string"/>
+
+
+        <one-to-one name="user" class="model.User" property-ref="profilePicture" cascade="all"/>
 
     </class>
 

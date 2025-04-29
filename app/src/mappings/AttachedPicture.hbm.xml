@@ -2,8 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
-    <class name="model.AttachedPhoto" table="attached_pictures">
+<hibernate-mapping package="model">
+    <class name="model.AttachedPicture" table="attached_pictures">
         <id column="id" name="id">
             <generator class="identity"/>
         </id>

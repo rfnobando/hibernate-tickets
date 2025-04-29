@@ -9,7 +9,7 @@ public class TicketMessage {
 	private String body;
 	private LocalDateTime createdAt;
 	private User user;
-	private List<AttachedPicture> pictures;
+	private List<AttachedPicture> attachedPictures;
 	
 	public TicketMessage() {}
 	 
@@ -18,7 +18,7 @@ public class TicketMessage {
 		this.body = body;
 		this.createdAt = createdAt;
 		this.user = user;
-		this.pictures = new ArrayList<AttachedPicture>();
+		this.attachedPictures = new ArrayList<AttachedPicture>();
 	}
 	public long getId() {
 		return id;
@@ -49,19 +49,19 @@ public class TicketMessage {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	public List<AttachedPicture> getPictures() {
-		return pictures;
+
+	public List<AttachedPicture> getAttachedPictures() {
+		return attachedPictures;
 	}
 
-	public void setPictures(List<AttachedPicture> pictures) {
-		this.pictures = pictures;
+	public void setAttachedPictures(List<AttachedPicture> attachedPictures) {
+		this.attachedPictures = attachedPictures;
 	}
 
 	@Override
 	public String toString() {
 		return "TicketMessage [id=" + id + ", body=" + body + ", createdAt=" + createdAt + ", user=" + user
-				+ ", pictures=" + pictures + "]";
+				+ ", attachedPictures=" + attachedPictures + "]";
 	}
 	
 	

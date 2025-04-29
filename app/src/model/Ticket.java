@@ -11,7 +11,7 @@ public class Ticket {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private Customer customer;
-	private List<Employee> employee;
+	private List<Employee> employees;
 	private TicketCategory ticketCategory;
 	private Status status;
 	private List<TicketMessage> messages;
@@ -25,7 +25,7 @@ public class Ticket {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.customer = customer;
-		this.employee = new ArrayList<Employee>();
+		this.employees = new ArrayList<Employee>();
 		this.ticketCategory = ticketCategory;
 		this.status = status;
 		this.messages = new ArrayList<TicketMessage>();
@@ -72,12 +72,12 @@ public class Ticket {
 		this.customer = customer;
 	}
 
-	public List<Employee> getEmployee() {
-		return employee;
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setEmployee(List<Employee> employee) {
-		this.employee = employee;
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
 	public TicketCategory getTicketCategory() {
@@ -107,7 +107,7 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", customer=" + customer.getId() + ", employee=" + (employee != null ? employee.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
+				+ ", customer=" + customer.getId() + ", employees=" + (employees != null ? employees.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
 				+ status + ", messages=" + messages + "]";
 	}
 	

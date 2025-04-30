@@ -7,9 +7,7 @@
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
-
         <property name="name" column="name" type="string"/>
-
         <set name="tickets" table="tickets" inverse="true" lazy="true" fetch="select">
             <key column="ticket_category_id" not-null="true"/>
             <one-to-many class="model.Ticket"/>

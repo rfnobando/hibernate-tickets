@@ -3,28 +3,28 @@
 "http://www.hibernate.org/dtd/hibernate-mapping">
 
 <hibernate-mapping package="model">
-
     <class name="model.User" table="users" abstract="true">
-
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
-
         <property name="name" column="first_name" type="string"/>
         <property name="surname" column="last_name" type="string"/>
         <property name="email" column="email" type="string"/>
         <property name="password" column="password" type="string"/>
-
-        <one-to-one name="profilePicture" class="model.ProfilePicture" property-ref="user" cascade="all" />
-
+        <one-to-one name="profilePicture" class="model.ProfilePicture" cascade="all" />
+	    <joined-subclass name="Customer" table="customers">
+	        <key column="user_id"/>
+	        <set name="createdTickets" table="tickets" inverse="true" lazy="true" fetch="select">
+            	<key column="customer_id" not-null="true"/>
+            	<one-to-many class="model.Ticket"/>
+        	</set>
+	    </joined-subclass>
+	    <joined-subclass name="Employee" table="employees">
+	        <key column="user_id"/>
+	        <set name="managedTickets" table="employees_tickets" lazy="true" cascade="all">
+            	<key column="employee_id"/>
+            	<many-to-many class="model.Ticket" column="ticket_id"/>
+        	</set>
+	    </joined-subclass>
     </class>
-
-    <joined-subclass name="Customer" table="customers">
-        <key column="user_id"/>
-    </joined-subclass>
-
-    <joined-subclass name="Employee" table="employees">
-        <key column="user_id"/>
-    </joined-subclass>
-
 </hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD5.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/hibernate_tickets?useSSL=false</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">123456</property>
+        <property name="connection.pool_size">1</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">false</property><!-- en true muestra hql en consola-->
+        <!-- Mapeo Entidades -->
+        <mapping resource="mappings/Status.hbm.xml" />
+        <mapping resource="mappings/ProfilePicture.hbm.xml" />
+        <mapping resource="mappings/User.hbm.xml" />
+        <mapping resource="mappings/AttachedPicture.hbm.xml" />
+        <mapping resource="mappings/TicketMessage.hbm.xml" />
+        <mapping resource="mappings/Ticket.hbm.xml" />
+        <mapping resource="mappings/TicketCategory.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

@@ -10,3 +10,9 @@
 /app/.classpath
 /app/.project
 /app/src/hibernate.cfg.xml
+
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+.idea/

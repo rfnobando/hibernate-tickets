@@ -10,7 +10,7 @@
         </id>
 
 
-	<property column="file_name" name="name" type="string" unique="true"/>
+        <property name="fileName" column="file_name" type="string" unique="true"/>
 
 
         <one-to-one name="user" class="model.User" property-ref="profilePicture" cascade="all"/>

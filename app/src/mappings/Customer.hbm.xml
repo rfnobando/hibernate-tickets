@@ -7,7 +7,7 @@
         <key column="user_id" />
 
         <set name="createdTickets" table="tickets" inverse="true" lazy="true" fetch="select">
-            <key column="client_id" not-null="true"/>
+            <key column="customer_id" not-null="true"/>
             <one-to-many class="model.Ticket"/>
         </set>
 

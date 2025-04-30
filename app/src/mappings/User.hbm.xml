@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 5.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping">
+
+<hibernate-mapping package="model">
+
+    <class name="model.User" table="users" abstract="true">
+
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" column="first_name" type="string"/>
+        <property name="surname" column="last_name" type="string"/>
+        <property name="email" column="email" type="string"/>
+        <property name="password" column="password" type="string"/>
+
+        <one-to-one name="profilePicture" class="model.ProfilePicture" property-ref="user" cascade="all" />
+
+    </class>
+
+    <joined-subclass name="Customer" table="customers">
+        <key column="user_id"/>
+    </joined-subclass>
+
+    <joined-subclass name="Employee" table="employees">
+        <key column="user_id"/>
+    </joined-subclass>
+
+</hibernate-mapping>

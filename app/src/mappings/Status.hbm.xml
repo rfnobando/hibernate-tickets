@@ -2,20 +2,10 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 5.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping">
 <hibernate-mapping package="model">
-
     <class name="model.Status" table="status">
-
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
-
         <property name="name" column="name" type="string"/>
-
-        <set name="tickets" table="tickets" inverse="true" lazy="true" fetch="select">
-            <key column="status_id" not-null="true"/>
-            <one-to-many class="model.Ticket"/>
-        </set>
-
     </class>
-
 </hibernate-mapping>

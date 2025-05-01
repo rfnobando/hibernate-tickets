@@ -1,5 +1,5 @@
 INSERT INTO `hibernate_tickets`.`statuses` (`name`) VALUES
-('open'),
+('pending'),
 ('in_progress'),
 ('resolved'),
 ('closed');

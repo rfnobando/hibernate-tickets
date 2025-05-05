@@ -1,19 +1,21 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TicketCategory {
 	private long id;
 	private String name;
-	private List<Ticket> tickets;
+	private Set<Ticket> tickets;
 	
 	public TicketCategory(){}
 	
 	public TicketCategory(String name) {
 		super();
 		this.name = name;
-		this.tickets = new ArrayList<Ticket>();
+		this.tickets = new HashSet<Ticket>();
 	}
 	public long getId() {
 		return id;
@@ -27,10 +29,10 @@ public class TicketCategory {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Ticket> getTickets() {
+	public Set<Ticket> getTickets() {
 		return tickets;
 	}
-	public void setTickets(List<Ticket> tickets) {
+	public void setTickets(Set<Ticket> tickets) {
 		this.tickets = tickets;
 	}
 	@Override

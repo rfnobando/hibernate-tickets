@@ -1,36 +1,34 @@
 package services;
 
 import java.util.List;
-import java.util.Set;
-
-import dao.EmployeeDao;
+import dao.EmployeeDAO;
 import model.Employee;
-import model.Ticket;
+
 
 public class EmployeeService {
-    private EmployeeDao employeeDao = new EmployeeDao();
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
 
     public Employee getById(long id) {
-        return employeeDao.get(id);
+        return employeeDAO.get(id);
     }
 
     public long create(Employee employee) {
-        return employeeDao.create(employee);
+        return employeeDAO.create(employee);
     }
 
     public void update(Employee employee) {
-        employeeDao.update(employee);
+    	employeeDAO.update(employee);
     }
 
     public void delete(Employee employee) {
-        employeeDao.delete(employee);
+    	employeeDAO.delete(employee);
     }
 
     public List<Employee> getAll() {
-        return employeeDao.getAll();
+        return employeeDAO.getAll();
     }
 
     public Employee getManagedTickets(long id) {
-        return employeeDao.getWithManagedTickets(id);
+        return employeeDAO.getWithManagedTickets(id);
     }
 }

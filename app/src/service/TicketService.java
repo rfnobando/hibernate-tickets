@@ -22,10 +22,12 @@ import model.User;
 public class TicketService {
 	TicketDAO dao = new TicketDAO();
 	
-	
-	
 	// Receives the data to set up the Ticket and the TicketMessage	
 	public long createTicket(String title, Timestamp createdAt, Customer customer, TicketCategory ticketCategory, String body, Set<AttachedPicture> attachedPictures)throws Exception{
+		if (title == null || title.isEmpty() || customer == null || ticketCategory == null || body == null || body.isEmpty()) {
+		    throw new Exception("ERROR: Some required ticket fields are missing.");
+		}
+		
 		TicketMessageService ticketMessageService = new TicketMessageService();// Creates the TicketMessageService (ABM)
 		StatusService statusService = new StatusService();// Creates the StatusService (ABM)
 		
@@ -40,9 +42,10 @@ public class TicketService {
 		return id;
 	}
 	
-	public long createTicketMessage(Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures) {
-		TicketMessageService ticketMessageService = new TicketMessageService();
+	public long createTicketMessage(Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures)throws Exception {
+		if(ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved"))throw new Exception("ERROR: The ticket is closed, you can't create a new message");
 		
+		TicketMessageService ticketMessageService = new TicketMessageService();// Creates the TicketMessageService (ABM)
 		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, createdAt, user, attachedPictures);// Creates the TicketMessage
 		msg.setTicket(ticket);// Link it to the Ticket
 		
@@ -52,11 +55,25 @@ public class TicketService {
 		
 		return msg.getId();// Now the ID should be set
 	}
+	
+	public void closeTicket(Ticket ticket)throws Exception{
+		if(ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved"))throw new Exception("ERROR: The ticket is already closed");
+		StatusService statusService = new StatusService();// Creates the StatusService (ABM)
+		ticket.setStatus(statusService.getStatus(4));//status with ID 1 is "closed"
+		dao.update(ticket);
+	}
+	
+	public Ticket getTicket(long id) {
+		return dao.get(id);
+	}
+	public Ticket getTicketWithStatus(long id) {
+		return dao.getTicketWithStatus(id);
+	}
 		
-	public void borrarTicketId(long id)throws Exception {
-		Ticket ticketEncontrado = dao.get(id);
-		if (ticketEncontrado == null) throw new Exception("Error: the Ticket doesn't exist.");
-		dao.delete(ticketEncontrado);
+	public void deleteTicketId(long id)throws Exception {
+		Ticket ticketFound = dao.get(id);
+		if (ticketFound == null) throw new Exception("Error: the Ticket doesn't exist.");
+		dao.delete(ticketFound);
 	}
 	
 }

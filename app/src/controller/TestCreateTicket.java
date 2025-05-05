@@ -23,6 +23,7 @@ public class TestCreateTicket {
 		TicketCategoryService abmTicketCategory = new TicketCategoryService();
 		CustomerService abmCustomer = new CustomerService();
 		long seCreo= 0;
+		long seAgrego = 0;
 		
 		/*
 		 * For this to work, you need a user and a customer that inherits from user.
@@ -38,19 +39,22 @@ public class TestCreateTicket {
 		 *    VALUES (1);
 		 */
 		try{
-			seCreo = abmTicket.createTicket(
-					"Este seria el cuarto",
+			/*seCreo = abmTicket.createTicket(
+					"Este tiene que estar Cerrado",
 					Timestamp.valueOf(LocalDateTime.of(2025, 5, 5, 12, 4)), 
 					abmCustomer.getId(1), 
 					abmTicketCategory.getId(1), 
 					"q capo chatgpt", 
 					null
-					);
+					);*/
+			abmTicket.closeTicket(abmTicket.getTicketWithStatus(5));
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
 			System.out.println(seCreo);// Prints the created ticket's ID
+			System.out.println(seAgrego);// Prints the new ticketMessage ID
 		}
 		
 		

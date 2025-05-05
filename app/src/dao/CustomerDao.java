@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import model.Customer;
 import model.Ticket;
 
-public class CustomerDao extends BaseDao<Customer> {
+public class CustomerDao extends BaseDAO<Customer> {
 
     @SuppressWarnings("unchecked")
     

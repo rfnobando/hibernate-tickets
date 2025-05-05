@@ -1,16 +1,12 @@
 package dao;
 
-import java.util.List;
-import java.util.Set;
-
 import org.hibernate.HibernateException;
 
-import model.Customer;
+
 import model.Employee;
-import model.Ticket;
 
-public class EmployeeDao extends BaseDao<Employee> {
-
+public class EmployeeDao extends BaseDAO<Employee> {
+	   
 	public Employee getWithManagedTickets(long id) throws HibernateException {
 	    Employee employee = null;
 	    try {

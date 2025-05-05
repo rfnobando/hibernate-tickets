@@ -14,5 +14,7 @@
             <key column="ticket_message_id" not-null="true"/>
             <one-to-many class="model.AttachedPicture"/>
         </set>
+        <many-to-one name="ticket" column="ticket_id" class="model.Ticket" not-null="true"/>
+        <!-- This links each message to a specific ticket (foreign key in DB); required for proper relationship mapping -->
     </class>
 </hibernate-mapping>

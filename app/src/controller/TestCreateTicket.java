@@ -1,0 +1,59 @@
+package controller;
+
+//import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Set;
+
+import model.AttachedPicture;
+import model.Customer;
+import model.TicketCategory;
+import service.CustomerService;
+import service.TicketCategoryService;
+import service.TicketService;
+
+public class TestCreateTicket {
+
+	public static void main(String[] args) {
+		
+		
+		TicketService abmTicket = new TicketService();
+		TicketCategoryService abmTicketCategory = new TicketCategoryService();
+		CustomerService abmCustomer = new CustomerService();
+		long seCreo= 0;
+		
+		/*
+		 * For this to work, you need a user and a customer that inherits from user.
+		 * (In this case, data was manually inserted into MySQL):
+		 * 
+		 * 1. First insert the base user into the 'users' table:
+		 *    INSERT INTO `hibernate_tickets`.`users` (`first_name`, `last_name`, `email`, `password`)
+		 *    VALUES ('Juan', 'Pérez', 'juan.perez@example.com', 'password123');
+		 * 
+		 * 2. Then insert into the 'customers' table, using the user ID from the previous step.
+		 *    Assuming the generated ID was 1:
+		 *    INSERT INTO `hibernate_tickets`.`customers` (`user_id`)
+		 *    VALUES (1);
+		 */
+		try{
+			seCreo = abmTicket.createTicket(
+					"Este seria el cuarto",
+					Timestamp.valueOf(LocalDateTime.of(2025, 5, 5, 12, 4)), 
+					abmCustomer.getId(1), 
+					abmTicketCategory.getId(1), 
+					"q capo chatgpt", 
+					null
+					);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println(seCreo);// Prints the created ticket's ID
+		}
+		
+		
+	}
+
+}

@@ -1,24 +1,29 @@
 package model;
 
+import java.sql.Timestamp;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TicketMessage {
 	private long id;
 	private String body;
-	private LocalDateTime createdAt;
+	private Timestamp createdAt;
 	private User user;
-	private List<AttachedPicture> attachedPictures;
+	private Set<AttachedPicture> attachedPictures;
+	private Ticket ticket;// Required for Hibernate mapping, even if we don't use it in the Java logic
 	
 	public TicketMessage() {}
 	 
-	public TicketMessage(String body, LocalDateTime createdAt, User user) {
+	public TicketMessage(String body, Timestamp createdAt, User user) {
 		super();
 		this.body = body;
 		this.createdAt = createdAt;
 		this.user = user;
-		this.attachedPictures = new ArrayList<AttachedPicture>();
+		this.attachedPictures = new HashSet<AttachedPicture>();
 	}
 	public long getId() {
 		return id;
@@ -35,11 +40,11 @@ public class TicketMessage {
 		this.body = body;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -50,12 +55,20 @@ public class TicketMessage {
 		this.user = user;
 	}
 
-	public List<AttachedPicture> getAttachedPictures() {
+	public Set<AttachedPicture> getAttachedPictures() {
 		return attachedPictures;
 	}
 
-	public void setAttachedPictures(List<AttachedPicture> attachedPictures) {
+	public void setAttachedPictures(Set<AttachedPicture> attachedPictures) {
 		this.attachedPictures = attachedPictures;
+	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
 	}
 
 	@Override

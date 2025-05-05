@@ -1,24 +1,26 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Customer extends User {
-	private List<Ticket> createdTickets;
+	private Set<Ticket> createdTickets;
 
 	
 	public Customer(){}
 	
 	public Customer(String name, String surname, String email, String password, ProfilePicture profilePhoto) {
 		super(name, surname, email, password, profilePhoto);
-		this.createdTickets = new ArrayList<Ticket>();
+		this.createdTickets = new HashSet<Ticket>();
 	}
 
-	public List<Ticket> getCreatedTickets() {
+	public Set<Ticket> getCreatedTickets() {
 		return createdTickets;
 	}
 
-	public void setCreatedTickets(List<Ticket> createdTickets) {
+	public void setCreatedTickets(Set<Ticket> createdTickets) {
 		this.createdTickets = createdTickets;
 	}
 

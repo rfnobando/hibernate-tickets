@@ -1,34 +1,40 @@
 package model;
 
+import java.sql.Timestamp;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Ticket {
 	private long id;
 	private String title;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	//private LocalDateTime createdAt;
+	//private LocalDateTime updatedAt;
+	private Timestamp  createdAt;
+	private Timestamp  updatedAt;
 	private Customer customer;
-	private List<Employee> employees;
+	private Set<Employee> employees;
 	private TicketCategory ticketCategory;
 	private Status status;
-	private List<TicketMessage> messages;
+	private Set<TicketMessage> messages;
 	
 	public Ticket(){}
 	
-	public Ticket(String title, LocalDateTime createdAt, LocalDateTime updatedAt, Customer customer,
+	public Ticket(String title, Timestamp createdAt, Customer customer,
 			TicketCategory ticketCategory, Status status) {
 		super();
 		this.title = title;
 		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
+		this.updatedAt = createdAt;
 		this.customer = customer;
-		this.employees = new ArrayList<Employee>();
+		this.employees = new HashSet<Employee>();
 		this.ticketCategory = ticketCategory;
 		this.status = status;
-		this.messages = new ArrayList<TicketMessage>();
+		this.messages = new HashSet<TicketMessage>();
 		
 	}
 
@@ -48,19 +54,19 @@ public class Ticket {
 		this.title = title;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Timestamp  getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(Timestamp  createdAt) {
 		this.createdAt = createdAt;
 	}
 	
-	public LocalDateTime getUpdatedAt() {
+	public Timestamp  getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
+	public void setUpdatedAt(Timestamp  updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -72,11 +78,11 @@ public class Ticket {
 		this.customer = customer;
 	}
 
-	public List<Employee> getEmployees() {
+	public Set<Employee> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(List<Employee> employees) {
+	public void setEmployees(Set<Employee> employees) {
 		this.employees = employees;
 	}
 
@@ -96,12 +102,16 @@ public class Ticket {
 		this.status = status;
 	}
 
-	public List<TicketMessage> getMessages() {
+	public Set<TicketMessage> getMessages() {
 		return messages;
 	}
 
-	public void setMessages(List<TicketMessage> messages) {
+	public void setMessages(Set<TicketMessage> messages) {
 		this.messages = messages;
+	}
+	
+	public void addMessage(TicketMessage newMessage) {
+		this.messages.add(newMessage);
 	}
 
 	@Override

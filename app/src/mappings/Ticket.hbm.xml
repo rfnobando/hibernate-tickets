@@ -16,7 +16,7 @@
             <key column="ticket_id" not-null="true"/>
             <many-to-many column="employee_id" class="model.Employee"/>
         </set>
-        <set name="messages" table="ticket_messages" inverse="true" lazy="true" fetch="select">
+        <set name="messages" table="ticket_messages" inverse="true" lazy="true" fetch="select" cascade="save-update">
             <key column="ticket_id" not-null="true"/>
             <one-to-many class="model.TicketMessage"/>
         </set>

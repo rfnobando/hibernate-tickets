@@ -6,7 +6,6 @@ import org.hibernate.HibernateException;
 import model.Employee;
 
 public class EmployeeDAO extends BaseDAO<Employee> {
-
 	public Employee getWithManagedTickets(long id) throws HibernateException {
 	    Employee employee = null;
 	    try {

@@ -6,7 +6,7 @@ import model.Customer;
 import model.Ticket;
 
 public class CustomerDAO extends BaseDAO<Customer> {
-
+  
     @SuppressWarnings("unchecked")
     public Customer getWithCreatedTickets(long id) {
         Customer customer = null;

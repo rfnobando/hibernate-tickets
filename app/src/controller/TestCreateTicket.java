@@ -44,14 +44,14 @@ public class TestCreateTicket {
 			/*seCreo = abmTicket.createTicket(
 					"Un ticket más, porque no",
 					Timestamp.valueOf(LocalDateTime.of(2025, 5, 5, 12, 4)), 
-					abmCustomer.getId(1), 
-					abmTicketCategory.getId(1), 
+					abmCustomer.getById(1), 
+					abmTicketCategory.getById(1), 
 					"q capo chatgpt", 
 					null
 					);*/
 			//abmTicket.closeTicket(abmTicket.getTicketWithStatus(1));
 			
-			abmTicket.createTicketMessage(abmTicket.getTicketWithStatusAndMessage(2), Timestamp.valueOf(LocalDateTime.of(2025, 6, 5, 15, 4)),abmCustomer.getId(1),"Este seria el segundo mensaje",null);
+			abmTicket.createTicketMessage(abmTicket.getTicketWithStatusAndMessage(1), Timestamp.valueOf(LocalDateTime.of(2025, 6, 5, 15, 4)),abmCustomer.getById(1),"Este seria el segundo mensaje",null);
 			//Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures)
 			
 		}catch(Exception e){

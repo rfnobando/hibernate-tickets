@@ -66,8 +66,8 @@ public class TicketService {
 	public Ticket getTicket(long id) {
 		return dao.get(id);
 	}
-	public Ticket getTicketWithStatus(long id) {
-		return dao.getTicketWithStatus(id);
+	public Ticket getTicketWithStatusAndMessage(long id) {
+		return dao.getTicketWithStatusAndMessage(id);
 	}
 		
 	public void deleteTicketId(long id)throws Exception {

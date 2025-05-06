@@ -9,7 +9,9 @@ import java.util.Set;
 
 import model.AttachedPicture;
 import model.Customer;
+import model.Ticket;
 import model.TicketCategory;
+import model.User;
 import service.CustomerService;
 import service.TicketCategoryService;
 import service.TicketService;
@@ -40,15 +42,17 @@ public class TestCreateTicket {
 		 */
 		try{
 			/*seCreo = abmTicket.createTicket(
-					"Este tiene que estar Cerrado",
+					"Un ticket más, porque no",
 					Timestamp.valueOf(LocalDateTime.of(2025, 5, 5, 12, 4)), 
 					abmCustomer.getId(1), 
 					abmTicketCategory.getId(1), 
 					"q capo chatgpt", 
 					null
 					);*/
-			abmTicket.closeTicket(abmTicket.getTicketWithStatus(5));
+			//abmTicket.closeTicket(abmTicket.getTicketWithStatus(1));
 			
+			abmTicket.createTicketMessage(abmTicket.getTicketWithStatusAndMessage(2), Timestamp.valueOf(LocalDateTime.of(2025, 6, 5, 15, 4)),abmCustomer.getId(1),"Este seria el segundo mensaje",null);
+			//Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures)
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -1,81 +1,93 @@
 package model;
 
+import util.ValidatorUtil;
+
 public abstract class User {
-	
-	protected long id;
-	protected String name;
-	protected String surname;
-	protected String email;
-	protected String password;
-	protected ProfilePicture profilePicture;
-	
-	public User(){}
-	
-	public User(String name, String surname, String email, String password, ProfilePicture profilePicture) {
-		super();
-		this.name = name;
-		this.surname = surname;
-		this.email = email;
-		this.password = password;
-		this.profilePicture = profilePicture;
-	}
+    protected long id;
+    protected String name;
+    protected String surname;
+    protected String email;
+    protected String password;
+    protected ProfilePicture profilePicture;
 
-	public long getId() {
-		return id;
-	}
+    public User() {
+    }
 
-	private void setId(long id) {
-		this.id = id;
-	}
+    public User(String name, String surname, String email, String password, ProfilePicture profilePicture) throws IllegalArgumentException {
+        super();
+        setName(name);
+        setSurname(surname);
+        setEmail(email);
+        setPassword(password);
+        this.profilePicture = profilePicture;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private void setId(long id) {
+        this.id = id;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setName(String name) throws IllegalArgumentException {
+        if (!ValidatorUtil.isValidName(name)) {
+            throw new IllegalArgumentException("Please enter a valid name: Contain only alphabetic characters (letters and accents) and spaces.");
+        }
+        this.name = name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getSurname() {
+        return surname;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setSurname(String surname) throws IllegalArgumentException {
+        if (!ValidatorUtil.isValidName(surname)) {
+            throw new IllegalArgumentException("Please enter a valid surname: Contain only alphabetic characters (letters and accents) and spaces.");
+        }
+        this.surname = surname;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setEmail(String email) throws IllegalArgumentException {
+        if (!ValidatorUtil.isValidEmail(email)) {
+            throw new IllegalArgumentException("Please enter a valid email address.");
+        }
+        this.email = email;
+    }
 
-	
+    public String getPassword() {
+        return password;
+    }
 
-	public ProfilePicture getProfilePicture() {
-		return profilePicture;
-	}
+    public void setPassword(String password) throws IllegalArgumentException {
+        if (!(ValidatorUtil.isNotEmptyOrNull(password) && password.length() >= 6 && !password.contains(" "))) {
+            throw new IllegalArgumentException("Please enter a valid password: at least 6 characters long and without spaces.");
+        }
+        this.password = password;
+    }
 
-	public void setProfilePicture(ProfilePicture profilePicture) {
-		this.profilePicture = profilePicture;
-	}
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", profilePicture=" + profilePicture;
-	}
-	
-	public boolean equals(User user) {
-		return this.id == user.getId();
-	}
+    public void setProfilePicture(ProfilePicture profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", profilePicture=" + profilePicture;
+    }
+
+    public boolean equals(User user) {
+        return this.id == user.getId();
+    }
 }

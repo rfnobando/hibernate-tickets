@@ -77,7 +77,7 @@ public abstract class BaseDAO<T> {
 		} finally {
 			session.close();
 		}
-		
+
 		return object;
 	}
 
@@ -88,13 +88,13 @@ public abstract class BaseDAO<T> {
 		try {
 			initTransaction();
 			String hql = "from " + entityClass.getSimpleName();
-			
+
 			Query query = session.createQuery(hql);
 			list = (List<T>) query.list();
 		} finally {
 			session.close();
 		}
-		
+
 		return list;
 	}
 }

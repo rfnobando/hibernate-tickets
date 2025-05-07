@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Employee extends User {
@@ -10,8 +8,8 @@ public class Employee extends User {
 
 	public Employee(){}
 	
-	public Employee(String name, String surname, String email, String password, ProfilePicture profilePhoto) {
-		super(name, surname, email, password, profilePhoto);
+	public Employee(String name, String surname, String email, String password, ProfilePicture profilePicture) {
+		super(name, surname, email, password, profilePicture);
 		this.managedTickets = new HashSet<Ticket>();
 	}
 
@@ -25,7 +23,7 @@ public class Employee extends User {
 
 	@Override
 	public String toString() {
-		return "Employee [managedTickets=" + managedTickets + "]"+ "]";
+        return "Employee [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + "]";
 	}
 	
 	

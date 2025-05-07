@@ -1,14 +1,9 @@
 package dao;
 
-import java.util.List;
-import org.hibernate.HibernateException;
-import model.Ticket;
 import model.TicketCategory;
 
 public class TicketCategoryDAO extends BaseDAO<TicketCategory> {
-
-    @SuppressWarnings("unchecked")
-    public TicketCategory filterTicketsByCategory(long id) {
+    public TicketCategory getWithTickets(long id) {
         TicketCategory category = null;
         try {
             initTransaction();

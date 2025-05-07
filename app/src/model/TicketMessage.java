@@ -1,11 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TicketMessage {
@@ -14,14 +11,14 @@ public class TicketMessage {
 	private Timestamp createdAt;
 	private User user;
 	private Set<AttachedPicture> attachedPictures;
-	private Ticket ticket;// Required for Hibernate mapping, even if we don't use it in the Java logic
+	private Ticket ticket; // Required for Hibernate mapping, even if we don't use it in the Java logic
 	
 	public TicketMessage() {}
 	 
-	public TicketMessage(String body, Timestamp createdAt, User user) {
+	public TicketMessage(String body, User user) {
 		super();
 		this.body = body;
-		this.createdAt = createdAt;
+		this.createdAt = Timestamp.valueOf(LocalDateTime.now());
 		this.user = user;
 		this.attachedPictures = new HashSet<AttachedPicture>();
 	}
@@ -73,8 +70,7 @@ public class TicketMessage {
 
 	@Override
 	public String toString() {
-		return "TicketMessage [id=" + id + ", body=" + body + ", createdAt=" + createdAt + ", user=" + user
-				+ ", attachedPictures=" + attachedPictures + "]";
+		return "TicketMessage [id=" + id + ", body=" + body + ", createdAt=" + createdAt + "]";
 	}
 	
 	

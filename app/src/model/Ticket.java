@@ -1,21 +1,16 @@
 package model;
 
 import java.sql.Timestamp;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Ticket {
 	private long id;
 	private String title;
-	//private LocalDateTime createdAt;
-	//private LocalDateTime updatedAt;
-	private Timestamp  createdAt;
-	private Timestamp  updatedAt;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 	private Customer customer;
 	private Set<Employee> employees;
 	private TicketCategory ticketCategory;
@@ -24,18 +19,16 @@ public class Ticket {
 	
 	public Ticket(){}
 	
-	public Ticket(String title, Timestamp createdAt, Customer customer,
-			TicketCategory ticketCategory, Status status) {
+	public Ticket(String title, Customer customer, TicketCategory ticketCategory, Status status) {
 		super();
 		this.title = title;
-		this.createdAt = createdAt;
-		this.updatedAt = createdAt;
+		this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+		this.updatedAt = Timestamp.valueOf(LocalDateTime.now());
 		this.customer = customer;
 		this.employees = new HashSet<Employee>();
 		this.ticketCategory = ticketCategory;
 		this.status = status;
 		this.messages = new HashSet<TicketMessage>();
-		
 	}
 
 	public long getId() {
@@ -116,9 +109,7 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", customer=" + customer.getId() + ", employees=" + (employees != null ? employees.stream().map(c -> c.getId()).collect(Collectors.toList()) : null) + ", ticketCategory=" + ticketCategory + ", status="
-				+ status + ", messages=" + messages + "]";
+		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 	
 	public boolean equals(Ticket ticket) {

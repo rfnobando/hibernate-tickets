@@ -9,8 +9,8 @@ public class Customer extends User {
 	
 	public Customer(){}
 	
-	public Customer(String name, String surname, String email, String password, ProfilePicture profilePhoto) {
-		super(name, surname, email, password, profilePhoto);
+	public Customer(String name, String surname, String email, String password, ProfilePicture profilePicture) {
+		super(name, surname, email, password, profilePicture);
 		this.createdTickets = new HashSet<Ticket>();
 	}
 
@@ -21,11 +21,9 @@ public class Customer extends User {
 	public void setCreatedTickets(Set<Ticket> createdTickets) {
 		this.createdTickets = createdTickets;
 	}
-
-	@Override
-	public String toString() {
-		return "Customer [createdTickets=" + createdTickets + "]" +"]";
-	}
 	
-	
+    @Override
+    public String toString() {
+        return "Customer [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + "]";
+    }
 }

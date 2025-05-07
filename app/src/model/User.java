@@ -84,7 +84,7 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", profilePicture=" + profilePicture;
+        return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + "]";
     }
 
     public boolean equals(User user) {

@@ -7,6 +7,7 @@ import dto.LoginResponseDTO;
 import model.Customer;
 import model.ProfilePicture;
 import service.AuthService;
+import session.SessionManager;
 
 public class SystemController {
 	private final AuthService authService;
@@ -19,15 +20,17 @@ public class SystemController {
 	
 	public void initApp() {
 		requestAuthentication();
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		
+		if (loggedInUser.getUserType() == "customer") {
+			openCustomerMenu(loggedInUser.getId());
+		}
+		
 	}
 
 	private void requestAuthentication() {
 		boolean isLoggedIn = false;
-		
-		showAuthenticationMenuOptions();
-		String option = scanner.nextLine();
-		
-		System.out.println();
+		String option = requestAuthenticationOption();
 		
 		do {
 			switch (option) {
@@ -36,38 +39,45 @@ public class SystemController {
 					break;
 				case "2":
 					handleRegister();
-					showAuthenticationMenuOptions();
-					option = scanner.nextLine();
-					System.out.println();
+					option = requestAuthenticationOption();
                     break;
 				case "3": 
 					closeApp();
 					break;
 				default:
-					showWrongOptionMessage();
-					option = scanner.nextLine();
-					System.out.println();
+					option = requestValidOption();
 					break;
 			}
 		} while (!isLoggedIn);
+	}
+	
+	private String requestAuthenticationOption() {
+		String option;
+		
+		System.out.println("\n--- AUTENTICACIÓN ---");
+		System.out.println("1. Iniciar sesión");
+		System.out.println("2. Registrar usuario");
+		System.out.println("3. Salir");
+		System.out.print("Elegí una opción: ");
+		option = scanner.nextLine();
+		System.out.println();
+		
+		return option;
+	}
+	
+	private String requestValidOption() {
+		String option;
+	
+		System.out.print("Opción incorrecta, elija otra opción: ");
+		option = scanner.nextLine();
+		
+		return option;
 	}
 	
 	private void closeApp() {
 		System.out.println();
 		System.out.println("¡Hasta luego!");
 		System.exit(0);
-	}
-	
-	private void showAuthenticationMenuOptions() {
-		System.out.println("\n--- AUTENTICACIÓN ---");
-		System.out.println("1. Iniciar sesión");
-		System.out.println("2. Registrar usuario");
-		System.out.println("3. Salir");
-		System.out.print("Elegí una opción: ");
-	}
-	
-	private void showWrongOptionMessage() {
-		System.out.print("Opción incorrecta, elija otra opción: ");
 	}
 	
 	private String formatUserInstanceType(String instanceType) {
@@ -137,5 +147,36 @@ public class SystemController {
             System.out.println("Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
+	}
+	
+	private void openCustomerMenu(long userId) {
+		String option = requestCustomerOption();
+		
+		do {
+			switch(option) {
+				case "1":
+					break;
+				case "3":
+					closeApp();
+					break;
+				default:
+					option = requestValidOption();
+					break;
+			}
+		} while (option != "3");
+	}
+	
+	private String requestCustomerOption() {
+		String option;
+		
+		System.out.println("\n--- MENÚ DE CLIENTES ---");
+		System.out.println("1. Crear nuevo ticket");
+		System.out.println("2. Ver mis tickets");
+		System.out.println("3. Salir");
+		System.out.print("Elegí una opción: ");
+		option = scanner.nextLine();
+		System.out.println();
+		
+		return option;
 	}
 }

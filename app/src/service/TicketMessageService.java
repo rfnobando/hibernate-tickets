@@ -13,13 +13,17 @@ import model.TicketMessage;
 import model.User;
 
 public class TicketMessageService {
-	TicketMessageDAO dao = new TicketMessageDAO();
+	private final TicketMessageDAO ticketMessageDAO;
 	
-	public TicketMessage createNewTicketMessage(String body, Timestamp createdAt, User user, Set<AttachedPicture> attachedPictures){
-		TicketMessage t = new TicketMessage(body,createdAt,user);// Creates a new ticket message
-		t.setAttachedPictures(attachedPictures);// Sets the attached pictures for the message
+	public TicketMessageService() {
+		this.ticketMessageDAO = new TicketMessageDAO();
+	}
+	
+	public TicketMessage createNewTicketMessage(String body, User user, Set<AttachedPicture> attachedPictures){
+		TicketMessage t = new TicketMessage(body, user); // Creates a new ticket message
+		t.setAttachedPictures(attachedPictures); // Sets the attached pictures for the message
 		// We don't use dao.create(t) because it is automatically saved when updating the ticket,
 		// thanks to the cascade="save-update" setting in Ticket.hbm.xml
-		return t;// Returns the configured TicketMessage
+		return t; // Returns the configured TicketMessage
 	}
 }

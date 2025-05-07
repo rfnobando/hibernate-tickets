@@ -6,7 +6,11 @@ import dao.CustomerDAO;
 import model.Customer;
 
 public class CustomerService {
-	private CustomerDAO customerDAO = new CustomerDAO();
+	private final CustomerDAO customerDAO;
+	
+	public CustomerService() {
+		this.customerDAO = new CustomerDAO();
+	}
 
     public Customer getById(long id) {
         return customerDAO.get(id);

@@ -10,7 +10,7 @@
         <property name="body" column="body" type="string"/>
         <property name="createdAt" column="created_at" type="timestamp"/>
         <many-to-one name="user" column="user_id" class="model.User" not-null="true"/>
-        <set name="attachedPictures" table="attached_pictures" inverse="true" lazy="true" fetch="select">
+        <set name="attachedPictures" table="attached_pictures" inverse="true" lazy="true" fetch="select" cascade="save-update">
             <key column="ticket_message_id" not-null="true"/>
             <one-to-many class="model.AttachedPicture"/>
         </set>

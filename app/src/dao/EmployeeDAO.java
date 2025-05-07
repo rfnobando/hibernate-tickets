@@ -1,8 +1,6 @@
 package dao;
 
 import org.hibernate.HibernateException;
-
-
 import model.Employee;
 
 public class EmployeeDAO extends BaseDAO<Employee> {

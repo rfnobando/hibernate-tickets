@@ -61,16 +61,18 @@ public class AuthServiceTest {
                         System.out.print("Contraseña: ");
                         String contraseña = scanner.nextLine();
                         System.out.print("Nombre del archivo de foto (opcional): ");
-                        String foto = scanner.nextLine();
+                        String pictureFileName = scanner.nextLine();
 
-                        ProfilePicture profilePicture = foto.isEmpty() ? null : new ProfilePicture(foto);
-                        Customer nuevoUsuario = new Customer(nombre, apellido, emailRegistro, contraseña, profilePicture);
-
-                        int id = authService.register(nuevoUsuario);
+                        Customer newUser = new Customer(nombre, apellido, emailRegistro, contraseña, null);
+                        ProfilePicture profilePicture = new ProfilePicture(pictureFileName, null);
+                        newUser.setProfilePicture(profilePicture);
+                        profilePicture.setUser(newUser);
+                        
+                        int id = authService.register(newUser);
                         System.out.println("¡Registro exitoso! ID del nuevo usuario: " + id);
-                        System.out.println("Nombre: " + nuevoUsuario.getName());
-                        System.out.println("Apellido: " + nuevoUsuario.getSurname());
-                        System.out.println("Email: " + nuevoUsuario.getEmail());
+                        System.out.println("Nombre: " + newUser.getName());
+                        System.out.println("Apellido: " + newUser.getSurname());
+                        System.out.println("Email: " + newUser.getEmail());
 
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error al registrar usuario: " + e.getMessage());
@@ -92,7 +94,7 @@ public class AuthServiceTest {
                 case "4":
                     System.out.println("¡Hasta luego!");
                     running = false;
-
+                    break;
                 default:
                     System.out.println("Opción no válida. Intentá de nuevo.");
                     break;

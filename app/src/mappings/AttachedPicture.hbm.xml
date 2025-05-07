@@ -7,5 +7,6 @@
             <generator class="identity"/>
         </id>
 		<property name="fileName" column="file_name" type="string" unique="true"/>
+		<many-to-one name="ticketMessage" column="ticket_message_id" class="model.TicketMessage" not-null="true"/>
     </class>
 </hibernate-mapping>

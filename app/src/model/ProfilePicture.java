@@ -3,12 +3,14 @@ package model;
 public class ProfilePicture {
 	private long id;
 	private String fileName;
+	private User user;
 	
 	public ProfilePicture(){}
 	
-	public ProfilePicture(String fileName) {
+	public ProfilePicture(String fileName, User user) {
 		super();
 		this.fileName = fileName;
+		this.user = user;
 	}
 	public long getId() {
 		return id;
@@ -23,6 +25,14 @@ public class ProfilePicture {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

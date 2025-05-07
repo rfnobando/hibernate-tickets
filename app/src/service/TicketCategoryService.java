@@ -6,29 +6,33 @@ import dao.TicketCategoryDAO;
 import model.TicketCategory;
 
 public class TicketCategoryService {
-	 private TicketCategoryDAO categoryDAO = new TicketCategoryDAO();
+	private final TicketCategoryDAO ticketCategoryDAO;
+	
+	public TicketCategoryService() {
+		this.ticketCategoryDAO = new TicketCategoryDAO();
+	}
 
-	    public TicketCategory getById(long id) {
-	        return categoryDAO.get(id);
-	    }
+    public TicketCategory getById(long id) {
+        return ticketCategoryDAO.get(id);
+    }
 
-	    public long create(TicketCategory category) {
-	        return categoryDAO.create(category);
-	    }
+    public long create(TicketCategory category) {
+        return ticketCategoryDAO.create(category);
+    }
 
-	    public void update(TicketCategory category) {
-	    	categoryDAO.update(category);
-	    }
+    public void update(TicketCategory category) {
+    	ticketCategoryDAO.update(category);
+    }
 
-	    public void delete(TicketCategory category) {
-	    	categoryDAO.delete(category);
-	    }
+    public void delete(TicketCategory category) {
+    	ticketCategoryDAO.delete(category);
+    }
 
-	    public List<TicketCategory> getAll() {
-	        return categoryDAO.getAll();
-	    }
+    public List<TicketCategory> getAll() {
+        return ticketCategoryDAO.getAll();
+    }
 
-	    public TicketCategory filterTicketsByCategories(long id) {
-	        return categoryDAO.filterTicketsByCategory(id);
-	    }
+    public TicketCategory getByIdWithTickets(long id) {
+        return ticketCategoryDAO.getWithTickets(id);
+    }
 }

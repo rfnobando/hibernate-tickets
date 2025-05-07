@@ -20,60 +20,70 @@ import model.TicketMessage;
 import model.User;
 
 public class TicketService {
-	TicketDAO dao = new TicketDAO();
+	private final TicketDAO ticketDAO;
+	private final TicketMessageService ticketMessageService;
+	private final StatusService statusService;
+	
+	public TicketService() {
+		this.ticketDAO = new TicketDAO();
+		this.ticketMessageService = new TicketMessageService();
+		this.statusService = new StatusService();
+	}
 	
 	// Receives the data to set up the Ticket and the TicketMessage	
-	public long createTicket(String title, Timestamp createdAt, Customer customer, TicketCategory ticketCategory, String body, Set<AttachedPicture> attachedPictures)throws Exception{
+	public long createTicket(String title, Customer customer, TicketCategory ticketCategory, String body, Set<AttachedPicture> attachedPictures) throws Exception {
 		if (title == null || title.isEmpty() || customer == null || ticketCategory == null || body == null || body.isEmpty()) {
 		    throw new Exception("ERROR: Some required ticket fields are missing.");
 		}
 		
-		TicketMessageService ticketMessageService = new TicketMessageService();// Creates the TicketMessageService (ABM)
-		StatusService statusService = new StatusService();// Creates the StatusService (ABM)
+		Ticket t = new Ticket(title, customer, ticketCategory, statusService.getStatus(1)); // Creates a new Ticket; status with ID 1 is "pending"
+		long id = ticketDAO.create(t); // Persists the Ticket in the database
 		
-		Ticket t = new  Ticket(title,createdAt, customer, ticketCategory,statusService.getStatus(1));// Creates a new Ticket; status with ID 1 is "pending"
-		long id = dao.create(t);// Persists the Ticket in the database
+		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, customer, attachedPictures); // Creates the first TicketMessage
+		msg.setTicket(t); // Links the message to the ticket
 		
-		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, createdAt, customer, attachedPictures);// Creates the first TicketMessage
-		msg.setTicket(t);// Links the message to the ticket
+		t.addMessage(msg); // Adds the message to the ticket's message list
+		ticketDAO.update(t); // Updates the ticket in the database (saves the cascade to messages)
 		
-		t.addMessage(msg);// Adds the message to the ticket's message list
-		dao.update(t); // Updates the ticket in the database (saves the cascade to messages)
 		return id;
 	}
 	
-	public long createTicketMessage(Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures)throws Exception {
-		if(ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved"))throw new Exception("ERROR: The ticket is closed, you can't create a new message");
+	public long createTicketMessage(Ticket ticket, User user, String body, Set<AttachedPicture> attachedPictures) throws Exception {
+		if (ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved")) throw new Exception("ERROR: The ticket is closed, you can't create a new message");
 		
-		TicketMessageService ticketMessageService = new TicketMessageService();// Creates the TicketMessageService (ABM)
-		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, createdAt, user, attachedPictures);// Creates the TicketMessage
-		msg.setTicket(ticket);// Link it to the Ticket
+		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, user, attachedPictures); // Creates the TicketMessage
+		msg.setTicket(ticket); // Link it to the Ticket
 		
-		ticket.addMessage(msg);// Add message to the Ticket
-		ticket.setUpdatedAt(createdAt);// Update the Ticket's timestamp
-		dao.update(ticket);// Persist the changes to the DB, including the new message (thanks to cascade="save-update")
+		for (AttachedPicture ap : attachedPictures) {
+			ap.setTicketMessage(msg);
+		}
 		
-		return msg.getId();// Now the ID should be set
+		ticket.addMessage(msg); // Add message to the Ticket
+		ticket.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now())); // Update the Ticket's timestamp
+		ticketDAO.update(ticket); // Persist the changes to the DB, including the new message (thanks to cascade="save-update")
+		
+		return msg.getId(); // Now the ID should be set
 	}
 	
-	public void closeTicket(Ticket ticket)throws Exception{
-		if(ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved"))throw new Exception("ERROR: The ticket is already closed");
-		StatusService statusService = new StatusService();// Creates the StatusService (ABM)
-		ticket.setStatus(statusService.getStatus(4));//status with ID 1 is "closed"
-		dao.update(ticket);
+	public void closeTicket(Ticket ticket) throws Exception {
+		if (ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved")) throw new Exception("ERROR: The ticket is already closed");
+		ticket.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+		ticket.setStatus(statusService.getStatus(4)); // status with ID 1 is "closed"
+		ticketDAO.update(ticket);
 	}
 	
 	public Ticket getTicket(long id) {
-		return dao.get(id);
+		return ticketDAO.get(id);
 	}
+	
 	public Ticket getTicketWithStatusAndMessage(long id) {
-		return dao.getTicketWithStatusAndMessage(id);
+		return ticketDAO.getTicketWithStatusAndMessage(id);
 	}
 		
 	public void deleteTicketId(long id)throws Exception {
-		Ticket ticketFound = dao.get(id);
+		Ticket ticketFound = ticketDAO.get(id);
 		if (ticketFound == null) throw new Exception("Error: the Ticket doesn't exist.");
-		dao.delete(ticketFound);
+		ticketDAO.delete(ticketFound);
 	}
 	
 }

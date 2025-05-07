@@ -8,5 +8,6 @@
             <generator class="identity"/>
         </id>
         <property name="fileName" column="file_name" type="string" unique="true"/>
+        <many-to-one name="user" column="user_id" class="model.User" unique="true" not-null="true"/>
     </class>
 </hibernate-mapping>

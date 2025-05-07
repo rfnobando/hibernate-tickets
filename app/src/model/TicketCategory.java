@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TicketCategory {
@@ -37,7 +35,7 @@ public class TicketCategory {
 	}
 	@Override
 	public String toString() {
-		return "TicketCategory [id=" + id + ", name=" + name + ", tickets=" + tickets + "]";
+		return "TicketCategory [id=" + id + ", name=" + name + "]";
 	}
 	
 	public boolean equals(TicketCategory ticketCategory) {

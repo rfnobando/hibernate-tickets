@@ -60,7 +60,7 @@ public class AuthServiceTest {
                         String emailRegistro = scanner.nextLine();
                         System.out.print("Contraseña: ");
                         String contraseña = scanner.nextLine();
-                        System.out.print("Nombre del archivo de foto (opcional): ");
+                        System.out.print("Nombre del archivo de foto de perfil: ");
                         String pictureFileName = scanner.nextLine();
 
                         Customer newUser = new Customer(nombre, apellido, emailRegistro, contraseña, null);

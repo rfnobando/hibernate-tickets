@@ -90,4 +90,12 @@ public abstract class User {
     public boolean equals(User user) {
         return this.id == user.getId();
     }
+    
+    public String findInstanceType() {
+    	return this instanceof Customer
+    			? "customer"
+    			: this instanceof Employee
+    				? "employee"
+    				: "unknown";
+    }
 }

@@ -222,13 +222,17 @@ public class SystemController {
 					option = requestEmployeeOption();
 					break;
 				case "3":
+					closeInProgressTicket(userId);
+					option = requestEmployeeOption();
+					break;
+				case "4":
 					closeApp();
 					break;
 				default:
 					option = requestValidOption();
 					break;
 			}
-		} while (option != "3");
+		} while (option != "4");
 	}
 	
 	private String requestEmployeeOption() {
@@ -237,7 +241,8 @@ public class SystemController {
 		System.out.println("\n--- MENÚ DE EMPLEADOS ---");
 		System.out.println("1. Elegir un ticket pendiente");
 		System.out.println("2. Ver tickets asignados");
-		System.out.println("3. Salir");
+		System.out.println("3. Cerrar un ticket en progreso");
+		System.out.println("4. Salir");
 		System.out.print("Elegí una opción: ");
 		option = scanner.nextLine();
 		System.out.println();
@@ -285,6 +290,43 @@ public class SystemController {
 		if (optionalChosenTicket.isPresent()) {			
 			employeeService.addTicket(employee, optionalChosenTicket.get());
 			System.out.println("¡El ticket fue asignado con éxito!");
+		}
+		
+	}
+	
+	private void closeInProgressTicket(long userId) {
+		Employee employee = employeeService.getByIdWithInProgressTickets(userId);
+		Set<Ticket> ticketSet = employee.getManagedTickets();
+		List<Long> ticketIds = new ArrayList<Long>();
+		
+		for (Ticket ticket : ticketSet) {
+			ticketIds.add(ticket.getId());
+		}
+		
+		System.out.println(ticketSet);
+		System.out.println();
+		
+		System.out.print("Cerrá un ticket que tengas asignado ingresando su id: ");
+		String chosenTicketId = scanner.nextLine();
+		
+		while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
+			System.out.print("ID incorrecto, elegí otro: ");
+			chosenTicketId = scanner.nextLine();
+		}
+		
+		final long longChosenTicketId = Long.parseLong(chosenTicketId);
+		
+		Optional<Ticket> optionalChosenTicket = ticketSet.stream()
+			.filter(ticket -> ticket.getId() == longChosenTicketId)
+			.findFirst();
+		
+		if (optionalChosenTicket.isPresent()) {
+			try {
+				ticketService.closeTicket(optionalChosenTicket.get().getId());
+				System.out.println("¡El ticket fue cerrado con éxito!");
+			} catch (Exception e) {
+				System.out.println("Error al cerrar el ticket: " + e.getMessage());
+			}
 		}
 		
 	}

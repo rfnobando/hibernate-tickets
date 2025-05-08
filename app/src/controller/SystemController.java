@@ -13,6 +13,7 @@ import model.ProfilePicture;
 import model.Ticket;
 import service.AuthService;
 import service.CustomerService;
+import service.EmployeeService;
 import service.TicketCategoryService;
 import service.TicketService;
 import session.SessionManager;
@@ -20,6 +21,7 @@ import session.SessionManager;
 public class SystemController {
 	private final AuthService authService;
 	private final CustomerService customerService;
+	private final EmployeeService employeeService;
 	private final TicketService ticketService;
 	private final TicketCategoryService ticketCategoryService;
 	private final Scanner scanner;
@@ -27,6 +29,7 @@ public class SystemController {
 	public SystemController() {
 		this.authService = new AuthService();
 		this.customerService = new CustomerService();
+		this.employeeService = new EmployeeService();
 		this.ticketService = new TicketService();
 		this.ticketCategoryService = new TicketCategoryService();
 		this.scanner = new Scanner(System.in);
@@ -209,6 +212,10 @@ public class SystemController {
 			switch(option) {
 				case "1":
 					break;
+				case "2":
+					showEmployeeManagedTickets(userId);
+					option = requestEmployeeOption();
+					break;
 				case "3":
 					closeApp();
 					break;
@@ -238,15 +245,12 @@ public class SystemController {
 		System.out.println(ticketSet);
 	}
 	
+	private void showEmployeeManagedTickets(long userId) {
+		Set<Ticket> ticketSet = employeeService.getByIdWithTickets(userId).getManagedTickets();
+		System.out.println(ticketSet);
+	}
+	
 	private void requestCreateTicket(long userId) {
-		/*seCreo = abmTicket.createTicket(
-			"El último de todos los tickets",
-			abmCustomer.getById(5), 
-			abmTicketCategory.getById(1), 
-			"q capo deepseek 2",
-			null
-		);*/
-		
 		System.out.println("1. Consultas Generales");
 		System.out.println("2. Atención al Cliente");
 		System.out.println("3. Soporte Técnico");
@@ -297,7 +301,5 @@ public class SystemController {
 		} catch (Exception e) {
 			System.out.println("Error al crear ticket: " + e.getMessage());
 		}
-		
-		
 	}
 }

@@ -1,7 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.Set;
 import dto.LoginResponseDTO;
 import model.AttachedPicture;
 import model.Customer;
+import model.Employee;
 import model.ProfilePicture;
 import model.Ticket;
 import service.AuthService;
@@ -211,6 +214,8 @@ public class SystemController {
 		do {
 			switch(option) {
 				case "1":
+					choosePendingTicket(userId);
+					option = requestEmployeeOption();
 					break;
 				case "2":
 					showEmployeeManagedTickets(userId);
@@ -230,7 +235,7 @@ public class SystemController {
 		String option;
 		
 		System.out.println("\n--- MENÚ DE EMPLEADOS ---");
-		System.out.println("1.");
+		System.out.println("1. Elegir un ticket pendiente");
 		System.out.println("2. Ver tickets asignados");
 		System.out.println("3. Salir");
 		System.out.print("Elegí una opción: ");
@@ -250,6 +255,40 @@ public class SystemController {
 		System.out.println(ticketSet);
 	}
 	
+	private void choosePendingTicket(long userId) {
+		Set<Ticket> ticketSet = ticketService.getPendingTicketsWithoutEmployees();
+		List<Long> ticketIds = new ArrayList<Long>();
+		
+		for (Ticket ticket : ticketSet) {
+			ticketIds.add(ticket.getId());
+		}
+		
+		System.out.println(ticketSet);
+		System.out.println();
+		
+		System.out.print("Elegí un ticket pendiente ingresando su id: ");
+		String chosenTicketId = scanner.nextLine();
+		
+		while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
+			System.out.print("ID incorrecto, elegí otro: ");
+			chosenTicketId = scanner.nextLine();
+		}
+		
+		final long longChosenTicketId = Long.parseLong(chosenTicketId);
+		
+		Optional<Ticket> optionalChosenTicket = ticketSet.stream()
+			.filter(ticket -> ticket.getId() == longChosenTicketId)
+			.findFirst();
+		
+		Employee employee = employeeService.getByIdWithTickets(userId);
+		
+		if (optionalChosenTicket.isPresent()) {			
+			employeeService.addTicket(employee, optionalChosenTicket.get());
+			System.out.println("¡El ticket fue asignado con éxito!");
+		}
+		
+	}
+	
 	private void requestCreateTicket(long userId) {
 		System.out.println("1. Consultas Generales");
 		System.out.println("2. Atención al Cliente");
@@ -264,7 +303,7 @@ public class SystemController {
 		System.out.println();
 		
 		while (!Arrays.asList("1", "2", "3", "4", "5", "6", "7").contains(categoryId)) {
-			System.out.print("Categoría incorrecta, elija otra: ");
+			System.out.print("Categoría incorrecta, elegí otra: ");
 			categoryId = scanner.nextLine();
 		}
 		

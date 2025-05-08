@@ -2,6 +2,7 @@ package dao;
 
 import org.hibernate.HibernateException;
 import model.Employee;
+import model.Ticket;
 
 public class EmployeeDAO extends BaseDAO<Employee> {
 	public Employee getWithManagedTickets(long id) throws HibernateException {

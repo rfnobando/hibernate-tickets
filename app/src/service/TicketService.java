@@ -83,6 +83,10 @@ public class TicketService {
 	public Ticket getTicketWithStatusAndMessage(long id) {
 		return ticketDAO.getTicketWithStatusAndMessage(id);
 	}
+	
+	public Set<Ticket> getPendingTicketsWithoutEmployees() {
+		return ticketDAO.getTicketsWithEmptyEmployees();
+	}
 		
 	public void deleteTicketId(long id)throws Exception {
 		Ticket ticketFound = ticketDAO.get(id);

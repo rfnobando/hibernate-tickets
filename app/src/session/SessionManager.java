@@ -26,7 +26,7 @@ public final class SessionManager {
     public static void setLoggedInUser(LoginResponseDTO userDto) {
         loggedInUser = userDto;
     }
-
+    
     /**
      * Retrieves the logged-in user as an Optional.
      * This avoids potential NullPointerExceptions when no user is logged in.
@@ -40,7 +40,9 @@ public final class SessionManager {
     public static void clearSession() {
         loggedInUser = null;
     }
+    
     public static boolean isLoggedIn(){
         return loggedInUser!=null;
     }
+    
 }

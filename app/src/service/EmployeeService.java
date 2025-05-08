@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 import dao.EmployeeDAO;
 import model.Employee;
+import model.Ticket;
 public class EmployeeService {
 	private final EmployeeDAO employeeDAO;
 	 
@@ -32,5 +33,10 @@ public class EmployeeService {
 
     public Employee getByIdWithTickets(long id) {
         return employeeDAO.getWithManagedTickets(id);
+    }
+    
+    public void addTicket(Employee employee, Ticket ticket) {
+    	employee.getManagedTickets().add(ticket);
+    	employeeDAO.update(employee);
     }
 }

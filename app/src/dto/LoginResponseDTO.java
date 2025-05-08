@@ -11,6 +11,7 @@ public class LoginResponseDTO {
     private final String email;
     private final String name;
     private final String surname;
+    private final String userType;
 
     /**
      * Parameterized constructor.
@@ -19,10 +20,11 @@ public class LoginResponseDTO {
      * @param user The User entity containing the id, email, name, and surname.
      */
     public LoginResponseDTO(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.name = user.getName();
         this.surname = user.getSurname();
-        this.id = user.getId();
+        this.userType = user.findInstanceType();
     }
 
     public String getEmail() {
@@ -40,4 +42,9 @@ public class LoginResponseDTO {
     public long getId() {
         return id;
     }
+    
+    public String getUserType() {
+    	return userType;
+    }
+
 }

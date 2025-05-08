@@ -42,6 +42,10 @@ public class TicketService {
 		TicketMessage msg = ticketMessageService.createNewTicketMessage(body, customer, attachedPictures); // Creates the first TicketMessage
 		msg.setTicket(t); // Links the message to the ticket
 		
+		for (AttachedPicture ap : attachedPictures) {
+			ap.setTicketMessage(msg);
+		}
+		
 		t.addMessage(msg); // Adds the message to the ticket's message list
 		ticketDAO.update(t); // Updates the ticket in the database (saves the cascade to messages)
 		
@@ -78,6 +82,10 @@ public class TicketService {
 	
 	public Ticket getTicketWithStatusAndMessage(long id) {
 		return ticketDAO.getTicketWithStatusAndMessage(id);
+	}
+	
+	public Set<Ticket> getPendingTicketsWithoutEmployees() {
+		return ticketDAO.getTicketsWithEmptyEmployees();
 	}
 		
 	public void deleteTicketId(long id)throws Exception {

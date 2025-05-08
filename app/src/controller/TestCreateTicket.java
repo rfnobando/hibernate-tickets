@@ -42,7 +42,7 @@ public class TestCreateTicket {
 		 *    VALUES (1);
 		 */
 		try {
-			/*
+			
 			seCreo = abmTicket.createTicket(
 				"El último de todos los tickets",
 				abmCustomer.getById(5), 
@@ -50,7 +50,7 @@ public class TestCreateTicket {
 				"q capo deepseek 2",
 				null
 			);
-			*/
+			
 			
 			
 			// abmTicket.closeTicket(abmTicket.getTicketWithStatusAndMessage(1));
@@ -66,14 +66,14 @@ public class TestCreateTicket {
 			attachedPictures.add(attachedPicture3);
 			attachedPictures.add(attachedPicture4);
 			attachedPictures.add(attachedPicture5);
-			
+			/*
 			abmTicket.createTicketMessage(
 				abmTicket.getTicketWithStatusAndMessage(2),
 				abmCustomer.getById(5),
 				"Este seria el último mensaje",
 				attachedPictures
 			);
-			
+			*/
 			//Ticket ticket, Timestamp createdAt, User user, String body, Set<AttachedPicture> attachedPictures)
 			
 		} catch(Exception e) {

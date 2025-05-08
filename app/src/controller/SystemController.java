@@ -1,20 +1,34 @@
 package controller;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
 
 import dto.LoginResponseDTO;
+import model.AttachedPicture;
 import model.Customer;
 import model.ProfilePicture;
+import model.Ticket;
 import service.AuthService;
+import service.CustomerService;
+import service.TicketCategoryService;
+import service.TicketService;
 import session.SessionManager;
 
 public class SystemController {
 	private final AuthService authService;
+	private final CustomerService customerService;
+	private final TicketService ticketService;
+	private final TicketCategoryService ticketCategoryService;
 	private final Scanner scanner;
 	
 	public SystemController() {
 		this.authService = new AuthService();
+		this.customerService = new CustomerService();
+		this.ticketService = new TicketService();
+		this.ticketCategoryService = new TicketCategoryService();
 		this.scanner = new Scanner(System.in);
 	}
 	
@@ -24,6 +38,8 @@ public class SystemController {
 		
 		if (loggedInUser.getUserType() == "customer") {
 			openCustomerMenu(loggedInUser.getId());
+		} else if(loggedInUser.getUserType() == "employee") {
+			openEmployeeMenu(loggedInUser.getId());
 		}
 		
 	}
@@ -155,6 +171,12 @@ public class SystemController {
 		do {
 			switch(option) {
 				case "1":
+					requestCreateTicket(userId);
+					option = requestCustomerOption();
+					break;
+				case "2":
+					showCustomerCreatedTickets(userId);
+					option = requestCustomerOption();
 					break;
 				case "3":
 					closeApp();
@@ -178,5 +200,104 @@ public class SystemController {
 		System.out.println();
 		
 		return option;
+	}
+	
+	private void openEmployeeMenu(long userId) {
+		String option = requestEmployeeOption();
+		
+		do {
+			switch(option) {
+				case "1":
+					break;
+				case "3":
+					closeApp();
+					break;
+				default:
+					option = requestValidOption();
+					break;
+			}
+		} while (option != "3");
+	}
+	
+	private String requestEmployeeOption() {
+		String option;
+		
+		System.out.println("\n--- MENÚ DE EMPLEADOS ---");
+		System.out.println("1.");
+		System.out.println("2. Ver tickets asignados");
+		System.out.println("3. Salir");
+		System.out.print("Elegí una opción: ");
+		option = scanner.nextLine();
+		System.out.println();
+		
+		return option;
+	}
+	
+	private void showCustomerCreatedTickets(long userId) {
+		Set<Ticket> ticketSet = customerService.getByIdWithTickets(userId).getCreatedTickets();
+		System.out.println(ticketSet);
+	}
+	
+	private void requestCreateTicket(long userId) {
+		/*seCreo = abmTicket.createTicket(
+			"El último de todos los tickets",
+			abmCustomer.getById(5), 
+			abmTicketCategory.getById(1), 
+			"q capo deepseek 2",
+			null
+		);*/
+		
+		System.out.println("1. Consultas Generales");
+		System.out.println("2. Atención al Cliente");
+		System.out.println("3. Soporte Técnico");
+		System.out.println("4. Errores");
+		System.out.println("5. Solicitudes de Servicio");
+		System.out.println("6. Mantenimiento");
+		System.out.println("7. Feedback");
+		
+		System.out.print("Elegí la categoría del ticket: ");
+		String categoryId = scanner.nextLine();
+		System.out.println();
+		
+		while (!Arrays.asList("1", "2", "3", "4", "5", "6", "7").contains(categoryId)) {
+			System.out.print("Categoría incorrecta, elija otra: ");
+			categoryId = scanner.nextLine();
+		}
+		
+		System.out.print("Título del ticket: ");
+		String title = scanner.nextLine();
+		System.out.print("Mensaje: ");
+		String message = scanner.nextLine();
+		Set<AttachedPicture> attachedPictures = new HashSet<AttachedPicture>();
+		String pictureName = "0";
+		
+		System.out.println("Si tu mensaje lleva fotos adjuntas, indicanos el nombre de cada archivo.");
+		System.out.println("Si tu mensaje no lleva fotos adjuntas, ingresá 0.");
+		System.out.println();
+		
+		do {
+			System.out.print("Foto: ");
+			pictureName = scanner.nextLine();
+			
+			if (!pictureName.equals("0")) {
+				attachedPictures.add(new AttachedPicture(pictureName, null));
+			}
+		} while (!pictureName.equals("0"));
+		
+		try {
+			ticketService.createTicket(
+				title,
+				customerService.getById(userId),
+				ticketCategoryService.getById(Long.parseLong(categoryId)),
+				message,
+				attachedPictures
+			);
+			
+			System.out.println("Ticket creado con éxito.");
+		} catch (Exception e) {
+			System.out.println("Error al crear ticket: " + e.getMessage());
+		}
+		
+		
 	}
 }

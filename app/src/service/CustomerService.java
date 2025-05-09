@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.CustomerDAO;
 import model.Customer;
+import model.Employee;
 
 public class CustomerService {
 	private final CustomerDAO customerDAO;
@@ -34,5 +35,9 @@ public class CustomerService {
 
     public Customer getByIdWithTickets(long id) {
         return customerDAO.getWithCreatedTickets(id);
+    }
+    
+    public Customer getByIdWithInProgressTickets(long id) {
+    	return customerDAO.getWithInProgressTickets(id);
     }
 }

@@ -25,7 +25,7 @@ public class EmployeeDAO extends BaseDAO<Employee> {
 	    try {
 	        initTransaction();
 	        employee = (Employee) session.createQuery(
-	            "select e from Employee e left join fetch e.managedTickets t left join fetch t.status s where e.id = :id and s.name = 'in_progress'"
+	            "select e from Employee e left join fetch e.managedTickets t left join fetch t.status s left join fetch t.messages where e.id = :id and s.name = 'in_progress'"
 	        ).setParameter("id", id)
 	         .uniqueResult();
 	    } finally {

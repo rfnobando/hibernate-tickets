@@ -70,9 +70,7 @@ public class TicketMessage {
 
 	@Override
 	public String toString() {
-		return "TicketMessage [id=" + id + ", body=" + body + ", createdAt=" + createdAt + "]";
+		return "TicketMessage [id=" + id + ", user=" + user.getName() + ", body=" + body + ", createdAt=" + createdAt + "]\n";
 	}
-	
-	
 	
 }

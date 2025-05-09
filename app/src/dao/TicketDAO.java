@@ -15,7 +15,7 @@ public class TicketDAO extends BaseDAO<Ticket> {
 	    try {
 	        initTransaction();
 	        ticket = (Ticket) session.createQuery(
-	            "SELECT t FROM Ticket t JOIN FETCH t.status LEFT JOIN FETCH t.messages WHERE t.id = :id"
+	            "SELECT t FROM Ticket t JOIN FETCH t.status LEFT JOIN FETCH t.messages m LEFT JOIN FETCH m.user WHERE t.id = :id"
 	        ).setParameter("id", id)
 	         .uniqueResult();
 	    } finally {

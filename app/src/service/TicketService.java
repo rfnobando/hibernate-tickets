@@ -71,30 +71,30 @@ public class TicketService {
 		
 		return msg.getId(); // Now the ID should be set
 	}
-	
+
 	public void closeTicket(long ticketId) throws Exception {
 		Ticket ticket = ticketDAO.getTicketWithStatus(ticketId);
 		ticket.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 		ticket.setStatus(statusDAO.getByName("closed"));
 		ticketDAO.update(ticket);
 	}
-	
+
 	public Ticket getTicket(long id) {
 		return ticketDAO.get(id);
 	}
-	
+
 	public Ticket getTicketWithStatusAndMessage(long id) {
 		return ticketDAO.getTicketWithStatusAndMessage(id);
 	}
-	
+
 	public Set<Ticket> getPendingTicketsWithoutEmployees() {
 		return ticketDAO.getTicketsWithEmptyEmployees();
 	}
-		
-	public void deleteTicketId(long id)throws Exception {
+
+	public void deleteTicketId(long id) throws Exception {
 		Ticket ticketFound = ticketDAO.get(id);
 		if (ticketFound == null) throw new Exception("Error: the Ticket doesn't exist.");
 		ticketDAO.delete(ticketFound);
 	}
-	
+
 }

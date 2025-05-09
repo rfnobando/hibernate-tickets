@@ -2,11 +2,13 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import dto.LoginResponseDTO;
 import model.AttachedPicture;
@@ -14,15 +16,18 @@ import model.Customer;
 import model.Employee;
 import model.ProfilePicture;
 import model.Ticket;
+import model.TicketMessage;
 import service.AuthService;
 import service.CustomerService;
 import service.EmployeeService;
 import service.TicketCategoryService;
 import service.TicketService;
+import service.UserService;
 import session.SessionManager;
 
 public class SystemController {
 	private final AuthService authService;
+	private final UserService userService;
 	private final CustomerService customerService;
 	private final EmployeeService employeeService;
 	private final TicketService ticketService;
@@ -31,6 +36,7 @@ public class SystemController {
 	
 	public SystemController() {
 		this.authService = new AuthService();
+		this.userService = new UserService();
 		this.customerService = new CustomerService();
 		this.employeeService = new EmployeeService();
 		this.ticketService = new TicketService();
@@ -41,11 +47,12 @@ public class SystemController {
 	public void initApp() {
 		requestAuthentication();
 		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		String userType = loggedInUser.getUserType();
 		
-		if (loggedInUser.getUserType() == "customer") {
-			openCustomerMenu(loggedInUser.getId());
-		} else if(loggedInUser.getUserType() == "employee") {
-			openEmployeeMenu(loggedInUser.getId());
+		if (userType == "customer") {
+			openCustomerMenu();
+		} else if(userType == "employee") {
+			openEmployeeMenu();
 		}
 		
 	}
@@ -171,59 +178,22 @@ public class SystemController {
         }
 	}
 	
-	private void openCustomerMenu(long userId) {
+	private void openCustomerMenu() {
 		String option = requestCustomerOption();
 		
 		do {
 			switch(option) {
 				case "1":
-					requestCreateTicket(userId);
+					requestCreateTicket();
 					option = requestCustomerOption();
 					break;
 				case "2":
-					showCustomerCreatedTickets(userId);
+					showCustomerCreatedTickets();
 					option = requestCustomerOption();
 					break;
 				case "3":
-					closeApp();
-					break;
-				default:
-					option = requestValidOption();
-					break;
-			}
-		} while (option != "3");
-	}
-	
-	private String requestCustomerOption() {
-		String option;
-		
-		System.out.println("\n--- MENÚ DE CLIENTES ---");
-		System.out.println("1. Crear nuevo ticket");
-		System.out.println("2. Ver mis tickets");
-		System.out.println("3. Salir");
-		System.out.print("Elegí una opción: ");
-		option = scanner.nextLine();
-		System.out.println();
-		
-		return option;
-	}
-	
-	private void openEmployeeMenu(long userId) {
-		String option = requestEmployeeOption();
-		
-		do {
-			switch(option) {
-				case "1":
-					choosePendingTicket(userId);
-					option = requestEmployeeOption();
-					break;
-				case "2":
-					showEmployeeManagedTickets(userId);
-					option = requestEmployeeOption();
-					break;
-				case "3":
-					closeInProgressTicket(userId);
-					option = requestEmployeeOption();
+					attachNewTicketMessage();
+					option = requestCustomerOption();
 					break;
 				case "4":
 					closeApp();
@@ -235,13 +205,13 @@ public class SystemController {
 		} while (option != "4");
 	}
 	
-	private String requestEmployeeOption() {
+	private String requestCustomerOption() {
 		String option;
 		
-		System.out.println("\n--- MENÚ DE EMPLEADOS ---");
-		System.out.println("1. Elegir un ticket pendiente");
-		System.out.println("2. Ver tickets asignados");
-		System.out.println("3. Cerrar un ticket en progreso");
+		System.out.println("\n--- MENÚ DE CLIENTES ---");
+		System.out.println("1. Crear nuevo ticket");
+		System.out.println("2. Ver mis tickets");
+		System.out.println("3. Responder un ticket");
 		System.out.println("4. Salir");
 		System.out.print("Elegí una opción: ");
 		option = scanner.nextLine();
@@ -250,17 +220,138 @@ public class SystemController {
 		return option;
 	}
 	
-	private void showCustomerCreatedTickets(long userId) {
+	private void openEmployeeMenu() {
+		String option = requestEmployeeOption();
+		
+		do {
+			switch(option) {
+				case "1":
+					choosePendingTicket();
+					option = requestEmployeeOption();
+					break;
+				case "2":
+					showEmployeeManagedTickets();
+					option = requestEmployeeOption();
+					break;
+				case "3":
+					attachNewTicketMessage();
+					option = requestEmployeeOption();
+					break;
+				case "4":
+					closeInProgressTicket();
+					option = requestEmployeeOption();
+					break;
+				case "5":
+					closeApp();
+					break;
+				default:
+					option = requestValidOption();
+					break;
+			}
+		} while (option != "5");
+	}
+	
+	private String requestEmployeeOption() {
+		String option;
+		
+		System.out.println("\n--- MENÚ DE EMPLEADOS ---");
+		System.out.println("1. Elegir un ticket pendiente");
+		System.out.println("2. Ver tickets asignados");
+		System.out.println("3. Responder un ticket");
+		System.out.println("4. Cerrar un ticket en progreso");
+		System.out.println("5. Salir");
+		System.out.print("Elegí una opción: ");
+		option = scanner.nextLine();
+		System.out.println();
+		
+		return option;
+	}
+	
+	private void showCustomerCreatedTickets() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		
 		Set<Ticket> ticketSet = customerService.getByIdWithTickets(userId).getCreatedTickets();
-		System.out.println(ticketSet);
+		List<Long> ticketIds = new ArrayList<Long>();
+		
+		if (!ticketSet.isEmpty()) {
+			for (Ticket ticket : ticketSet) {
+				ticketIds.add(ticket.getId());
+			}
+			
+			System.out.println(ticketSet);
+			System.out.println();
+			
+			System.out.println("Si querés ver los mensajes de un ticket, ingresá su id");
+			System.out.print("Si querés salir, ingresá 0: ");
+			String chosenTicketId = scanner.nextLine();
+			System.out.println();
+			
+			while (!ticketIds.contains(Long.parseLong(chosenTicketId)) && !chosenTicketId.equals("0")) {
+				System.out.print("ID incorrecto, elegí otro: ");
+				chosenTicketId = scanner.nextLine();
+			}
+			
+			if (!chosenTicketId.equals("0")) {
+				Ticket ticket = ticketService.getTicketWithStatusAndMessage(Long.parseLong(chosenTicketId));
+				
+				List<TicketMessage> sortedMessages = ticket.getMessages().stream()
+						.sorted(Comparator.comparing(TicketMessage::getId))
+						.collect(Collectors.toList());
+				
+				System.out.println(ticket);
+				System.out.println(sortedMessages);
+			}			
+		} else {
+			System.out.println("Aún no tenés tickets.");
+		}
+		
 	}
 	
-	private void showEmployeeManagedTickets(long userId) {
+	private void showEmployeeManagedTickets() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		
 		Set<Ticket> ticketSet = employeeService.getByIdWithTickets(userId).getManagedTickets();
-		System.out.println(ticketSet);
+		List<Long> ticketIds = new ArrayList<Long>();
+		
+		if (!ticketSet.isEmpty()) {
+			for (Ticket ticket : ticketSet) {
+				ticketIds.add(ticket.getId());
+			}
+			
+			System.out.println(ticketSet);
+			System.out.println();
+			
+			System.out.println("Si querés ver los mensajes de un ticket, ingresá su id");
+			System.out.print("Si querés salir, ingresá 0: ");
+			String chosenTicketId = scanner.nextLine();
+			System.out.println();
+			
+			while (!ticketIds.contains(Long.parseLong(chosenTicketId)) && !chosenTicketId.equals("0")) {
+				System.out.print("ID incorrecto, elegí otro: ");
+				chosenTicketId = scanner.nextLine();
+			}
+			
+			if (!chosenTicketId.equals("0")) {
+				Ticket ticket = ticketService.getTicketWithStatusAndMessage(Long.parseLong(chosenTicketId));
+				
+				List<TicketMessage> sortedMessages = ticket.getMessages().stream()
+					    .sorted(Comparator.comparing(TicketMessage::getId))
+					    .collect(Collectors.toList());
+				
+				System.out.println(ticket);
+				System.out.println(sortedMessages);
+			}
+		} else {
+			System.out.println("Aún no tenés tickets asignados.");
+		}
 	}
 	
-	private void choosePendingTicket(long userId) {
+	private void choosePendingTicket() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		
 		Set<Ticket> ticketSet = ticketService.getPendingTicketsWithoutEmployees();
 		List<Long> ticketIds = new ArrayList<Long>();
 		
@@ -294,44 +385,56 @@ public class SystemController {
 		
 	}
 	
-	private void closeInProgressTicket(long userId) {
+	private void closeInProgressTicket() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		
 		Employee employee = employeeService.getByIdWithInProgressTickets(userId);
-		Set<Ticket> ticketSet = employee.getManagedTickets();
-		List<Long> ticketIds = new ArrayList<Long>();
 		
-		for (Ticket ticket : ticketSet) {
-			ticketIds.add(ticket.getId());
-		}
-		
-		System.out.println(ticketSet);
-		System.out.println();
-		
-		System.out.print("Cerrá un ticket que tengas asignado ingresando su id: ");
-		String chosenTicketId = scanner.nextLine();
-		
-		while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
-			System.out.print("ID incorrecto, elegí otro: ");
-			chosenTicketId = scanner.nextLine();
-		}
-		
-		final long longChosenTicketId = Long.parseLong(chosenTicketId);
-		
-		Optional<Ticket> optionalChosenTicket = ticketSet.stream()
-			.filter(ticket -> ticket.getId() == longChosenTicketId)
-			.findFirst();
-		
-		if (optionalChosenTicket.isPresent()) {
-			try {
-				ticketService.closeTicket(optionalChosenTicket.get().getId());
-				System.out.println("¡El ticket fue cerrado con éxito!");
-			} catch (Exception e) {
-				System.out.println("Error al cerrar el ticket: " + e.getMessage());
+		if (employee != null) {
+			Set<Ticket> ticketSet = employee.getManagedTickets();
+			List<Long> ticketIds = new ArrayList<Long>();
+			
+			for (Ticket ticket : ticketSet) {
+				ticketIds.add(ticket.getId());
 			}
+			
+			System.out.println(ticketSet);
+			System.out.println();
+			
+			System.out.print("Cerrá un ticket que tengas asignado ingresando su id: ");
+			String chosenTicketId = scanner.nextLine();
+			
+			while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
+				System.out.print("ID incorrecto, elegí otro: ");
+				chosenTicketId = scanner.nextLine();
+			}
+			
+			final long longChosenTicketId = Long.parseLong(chosenTicketId);
+			
+			Optional<Ticket> optionalChosenTicket = ticketSet.stream()
+					.filter(ticket -> ticket.getId() == longChosenTicketId)
+					.findFirst();
+			
+			if (optionalChosenTicket.isPresent()) {
+				try {
+					ticketService.closeTicket(optionalChosenTicket.get().getId());
+					System.out.println("¡El ticket fue cerrado con éxito!");
+				} catch (Exception e) {
+					System.out.println("Error al cerrar el ticket: " + e.getMessage());
+				}
+			}
+		} else {
+			System.out.println("No tenés tickets en progreso.");
 		}
+		
 		
 	}
 	
-	private void requestCreateTicket(long userId) {
+	private void requestCreateTicket() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		
 		System.out.println("1. Consultas Generales");
 		System.out.println("2. Atención al Cliente");
 		System.out.println("3. Soporte Técnico");
@@ -357,7 +460,7 @@ public class SystemController {
 		String pictureName = "0";
 		
 		System.out.println("Si tu mensaje lleva fotos adjuntas, indicanos el nombre de cada archivo.");
-		System.out.println("Si tu mensaje no lleva fotos adjuntas, ingresá 0.");
+		System.out.println("Si tu mensaje no lleva fotos adjuntas o querés salir, ingresá 0.");
 		System.out.println();
 		
 		do {
@@ -382,5 +485,80 @@ public class SystemController {
 		} catch (Exception e) {
 			System.out.println("Error al crear ticket: " + e.getMessage());
 		}
+	}
+	
+	private void attachNewTicketMessage() {
+		LoginResponseDTO loggedInUser = SessionManager.getLoggedInUser().get();
+		long userId = loggedInUser.getId();
+		String userType = loggedInUser.getUserType();
+		Set<Ticket> ticketSet = null;
+		List<Long> ticketIds = new ArrayList<Long>();
+
+		if (userType.equals("employee")) {
+			Employee employee = employeeService.getByIdWithInProgressTickets(userId);
+			
+			if (employee != null) {
+				ticketSet = employee.getManagedTickets();				
+			}
+			
+		} else if (userType.equals("customer")) {
+			Customer customer = customerService.getByIdWithInProgressTickets(userId);
+			
+			if (customer != null) {				
+				ticketSet = customer.getCreatedTickets();
+			}
+			
+		}
+
+		if (ticketSet != null) {
+			for (Ticket ticket : ticketSet) {
+				ticketIds.add(ticket.getId());
+			}
+			
+			System.out.println(ticketSet);
+			System.out.println();
+			
+			System.out.print("Enviá un mensaje en un ticket en progreso: ");
+			String chosenTicketId = scanner.nextLine();
+			
+			while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
+				System.out.print("ID incorrecto, elegí otro: ");
+				chosenTicketId = scanner.nextLine();
+			}
+			
+			System.out.print("Mensaje: ");
+			String message = scanner.nextLine();
+			Set<AttachedPicture> attachedPictures = new HashSet<AttachedPicture>();
+			String pictureName = "0";
+			
+			System.out.println("Si tu mensaje lleva fotos adjuntas, indicanos el nombre de cada archivo.");
+			System.out.println("Si tu mensaje no lleva fotos adjuntas o querés salir, ingresá 0.");
+			System.out.println();
+			
+			do {
+				System.out.print("Foto: ");
+				pictureName = scanner.nextLine();
+				
+				if (!pictureName.equals("0")) {
+					attachedPictures.add(new AttachedPicture(pictureName, null));
+				}
+			} while (!pictureName.equals("0"));
+			
+			try {
+				ticketService.createTicketMessage(
+					ticketService.getTicketWithStatusAndMessage(Long.parseLong(chosenTicketId)),
+					userService.getById(userId),
+					message,
+					attachedPictures
+				);
+				
+				System.out.println("Mensaje enviado con éxito.");
+			} catch (Exception e) {
+				System.out.println("Error al enviar mensaje: " + e.getMessage());
+			}
+		} else {
+			System.out.println("No tenés tickets en progreso.");
+		}
+		
 	}
 }

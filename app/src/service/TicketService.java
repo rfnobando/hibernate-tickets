@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import dao.EmployeeDAO;
+import dao.StatusDAO;
 import dao.TicketDAO;
 import model.AttachedPicture;
 import model.Customer;
@@ -23,11 +24,13 @@ public class TicketService {
 	private final TicketDAO ticketDAO;
 	private final TicketMessageService ticketMessageService;
 	private final StatusService statusService;
+	private final StatusDAO statusDAO;
 	
 	public TicketService() {
 		this.ticketDAO = new TicketDAO();
 		this.ticketMessageService = new TicketMessageService();
 		this.statusService = new StatusService();
+		this.statusDAO = new StatusDAO();
 	}
 	
 	// Receives the data to set up the Ticket and the TicketMessage	
@@ -68,30 +71,30 @@ public class TicketService {
 		
 		return msg.getId(); // Now the ID should be set
 	}
-	
-	public void closeTicket(Ticket ticket) throws Exception {
-		if (ticket.getStatus().getName().equals("closed")||ticket.getStatus().getName().equals("resolved")) throw new Exception("ERROR: The ticket is already closed");
+
+	public void closeTicket(long ticketId) throws Exception {
+		Ticket ticket = ticketDAO.getTicketWithStatus(ticketId);
 		ticket.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-		ticket.setStatus(statusService.getStatus(4)); // status with ID 1 is "closed"
+		ticket.setStatus(statusDAO.getByName("closed"));
 		ticketDAO.update(ticket);
 	}
-	
+
 	public Ticket getTicket(long id) {
 		return ticketDAO.get(id);
 	}
-	
+
 	public Ticket getTicketWithStatusAndMessage(long id) {
 		return ticketDAO.getTicketWithStatusAndMessage(id);
 	}
-	
+
 	public Set<Ticket> getPendingTicketsWithoutEmployees() {
 		return ticketDAO.getTicketsWithEmptyEmployees();
 	}
-		
-	public void deleteTicketId(long id)throws Exception {
+
+	public void deleteTicketId(long id) throws Exception {
 		Ticket ticketFound = ticketDAO.get(id);
 		if (ticketFound == null) throw new Exception("Error: the Ticket doesn't exist.");
 		ticketDAO.delete(ticketFound);
 	}
-	
+
 }

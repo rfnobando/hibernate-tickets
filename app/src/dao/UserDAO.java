@@ -1,5 +1,6 @@
 package dao;
 
+import model.Employee;
 import model.User;
 import org.hibernate.HibernateException;
 
@@ -25,4 +26,20 @@ public class UserDAO extends BaseDAO<User> {
             session.close();
         }
     }
+    
+	public User getWithInProgressTickets(long id) throws HibernateException {
+	    User user = null;
+	    
+	    try {
+	        initTransaction();
+	        user = (User) session.createQuery(
+	            "select e from Employee e left join fetch e.managedTickets t left join fetch t.status s where e.id = :id and s.name = 'in_progress'"
+	        ).setParameter("id", id)
+	         .uniqueResult();
+	    } finally {
+	        session.close();
+	    }
+	    
+	    return user;
+	}
 }

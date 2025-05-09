@@ -2,13 +2,18 @@ package service;
 
 import java.util.List;
 import dao.EmployeeDAO;
+import dao.StatusDAO;
 import model.Employee;
+import model.Status;
 import model.Ticket;
+
 public class EmployeeService {
 	private final EmployeeDAO employeeDAO;
+	private final StatusDAO statusDAO;
 	 
 	public EmployeeService() {
 		this.employeeDAO = new EmployeeDAO();
+		this.statusDAO = new StatusDAO();
 	}
 	
     public Employee getById(long id) {
@@ -35,7 +40,13 @@ public class EmployeeService {
         return employeeDAO.getWithManagedTickets(id);
     }
     
+    public Employee getByIdWithInProgressTickets(long id) {
+    	return employeeDAO.getWithInProgressTickets(id);
+    }
+    
     public void addTicket(Employee employee, Ticket ticket) {
+    	Status inProgressStatus = statusDAO.getByName("in_progress");
+    	ticket.setStatus(inProgressStatus);
     	employee.getManagedTickets().add(ticket);
     	employeeDAO.update(employee);
     }

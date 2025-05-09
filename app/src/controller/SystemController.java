@@ -355,34 +355,37 @@ public class SystemController {
 		Set<Ticket> ticketSet = ticketService.getPendingTicketsWithoutEmployees();
 		List<Long> ticketIds = new ArrayList<Long>();
 		
-		for (Ticket ticket : ticketSet) {
-			ticketIds.add(ticket.getId());
+		if (!ticketSet.isEmpty()) {
+			for (Ticket ticket : ticketSet) {
+				ticketIds.add(ticket.getId());
+			}
+			
+			System.out.println(ticketSet);
+			System.out.println();
+			
+			System.out.print("Elegí un ticket pendiente ingresando su id: ");
+			String chosenTicketId = scanner.nextLine();
+			
+			while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
+				System.out.print("ID incorrecto, elegí otro: ");
+				chosenTicketId = scanner.nextLine();
+			}
+			
+			final long longChosenTicketId = Long.parseLong(chosenTicketId);
+			
+			Optional<Ticket> optionalChosenTicket = ticketSet.stream()
+					.filter(ticket -> ticket.getId() == longChosenTicketId)
+					.findFirst();
+			
+			Employee employee = employeeService.getByIdWithTickets(userId);
+			
+			if (optionalChosenTicket.isPresent()) {			
+				employeeService.addTicket(employee, optionalChosenTicket.get());
+				System.out.println("¡El ticket fue asignado con éxito!");
+			}			
+		} else {
+			System.out.println("Aún no hay tickets pendientes.");
 		}
-		
-		System.out.println(ticketSet);
-		System.out.println();
-		
-		System.out.print("Elegí un ticket pendiente ingresando su id: ");
-		String chosenTicketId = scanner.nextLine();
-		
-		while (!ticketIds.contains(Long.parseLong(chosenTicketId))) {
-			System.out.print("ID incorrecto, elegí otro: ");
-			chosenTicketId = scanner.nextLine();
-		}
-		
-		final long longChosenTicketId = Long.parseLong(chosenTicketId);
-		
-		Optional<Ticket> optionalChosenTicket = ticketSet.stream()
-			.filter(ticket -> ticket.getId() == longChosenTicketId)
-			.findFirst();
-		
-		Employee employee = employeeService.getByIdWithTickets(userId);
-		
-		if (optionalChosenTicket.isPresent()) {			
-			employeeService.addTicket(employee, optionalChosenTicket.get());
-			System.out.println("¡El ticket fue asignado con éxito!");
-		}
-		
 	}
 	
 	private void closeInProgressTicket() {

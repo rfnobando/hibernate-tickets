@@ -1,3 +1,4 @@
+-- Init database structure
 CREATE DATABASE `hibernate_tickets`
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_0900_ai_ci;
@@ -121,3 +122,33 @@ ALTER TABLE `attached_pictures`
 ADD CONSTRAINT `unique_attached_pictures_file_name` UNIQUE (`file_name`),
 ADD KEY `idx_attached_pictures_ticket_message_id` (`ticket_message_id`),
 ADD CONSTRAINT `fk_attached_pictures_ticket_message_id` FOREIGN KEY (`ticket_message_id`) REFERENCES `ticket_messages` (`id`);
+
+
+-- Init default values in statuses
+INSERT INTO `hibernate_tickets`.`statuses` (`name`) VALUES
+('pending'),
+('in_progress'),
+('resolved'),
+('closed');
+
+
+-- Init default values in ticket_categories
+INSERT INTO `hibernate_tickets`.`ticket_categories` (`name`) VALUES
+('general_inquiries'),
+('customer_support'),
+('technical_support'),
+('bugs_and_errors'),
+('service_requests'),
+('maintenance'),
+('feedback');
+
+
+-- Init first employee
+INSERT INTO `users` (`first_name`, `last_name`, `email`, `password`) VALUES
+('Pablo', 'García', 'pablogarcia@gmail.com', '$2a$10$ZUAjjG/OG0b.6bbcYS9xruJ6W39EGa0zY374tYqj1jKMb2UhC5mr6');
+
+INSERT INTO `employees` (`user_id`) VALUES
+((SELECT `id` FROM `users` WHERE `email` = 'pablogarcia@gmail.com'));
+
+INSERT INTO `profile_pictures` (`user_id`, `file_name`) VALUES
+((SELECT `id` FROM `users` WHERE `email` = 'pablogarcia@gmail.com'), 'pablogarcia.png');

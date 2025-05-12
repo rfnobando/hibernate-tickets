@@ -75,5 +75,4 @@ Antes de ejecutar el sistema, es necesario:
 
 ## Ejecución
 
-Para ejecutar el proyecto, se debe iniciar el método `main` de la clase `SystemTest`, ubicada en `app/src/test/`.
-Desde dicha clase se pueden probar las distintas funcionalidades del sistema.
+Para ejecutar el proyecto, debe utilizarse la rama `trunk`, que contiene la versión estable del sistema. La ejecución se realiza iniciando el método `main` de la clase `SystemTest`, ubicada en `app/src/test/`. Desde ahí, podrán probar las distintas funcionalidades del sistema.
